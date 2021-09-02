@@ -1,0 +1,23 @@
+{
+  "name": "starbutterfly",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node build/Main.js",
+    "watch": "tsc -p tsconfig.json -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.1.0",
+    "libquery": "^1.0.2",
+    "node-fetch": "^2.6.1",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.12",
+    "@types/yamljs": "^0.2.31"
+  }
+}

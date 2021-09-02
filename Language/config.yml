@@ -1,0 +1,9 @@
+English:
+    mini: en
+    emote: 🇬🇧
+    config: Language/english.yml
+Francais:
+    mini: fr
+    emote: 🇫🇷
+    config: Language/french.yml
+    default: true
