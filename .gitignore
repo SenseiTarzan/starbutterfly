@@ -1,3 +1,5 @@
 .idea/*
 /package-lock.json
 .build/*
+.resources/*
+.node_modules/*
