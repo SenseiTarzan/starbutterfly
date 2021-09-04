@@ -1,6 +1,6 @@
-/idea/*
-/package-lock.json
-/build/*
-/resources/*
-/node_modules/*
+.idea/*
+*.json
+build
+resources
+node_modules
 *.yml
