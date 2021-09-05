@@ -1,0 +1,27 @@
+hevolia:
+    test:
+        add: 'salut &1'
+        remove: 'salut &1'
+Command:
+    error:
+        subcommand: 'faites &1&2 `help`|`aide`'
+server:
+    embed:
+        title: Vote
+        explication:
+            title: 'Récupère ta recompense'
+            desc: 'Récupère ta recompense avec **/vote** en jeu'
+        notif:
+            title: '**Notif Vote**'
+            desc: 'Si vous souhaitez recevoir les notifications réagissez%n&1vote/'
+        Statistique:
+            title: '**Statistique**'
+            desc: 'Votes ce mois: &1%nRank mondial: &2%nJoueur connectés (à &3):  &4'
+    error:
+        channel: 'vous ne pouvez pas mettre dans se salon'
+        addserveur: 'Vous devez faire /vote addserver <token> <time> <role_id>'
+    data:
+        add:
+            server: 'vous avez ajouter un serveur dans la task de votre server'
+        removeserver: 'vous avez enlever un serveur dans la task de votre server'
+        addserver: 'vous avez ajouter un serveur dans la task de votre server'

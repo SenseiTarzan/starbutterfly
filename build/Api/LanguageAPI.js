@@ -1,1 +1,1 @@
-//# sourceMappingURL=LanguageAPI.js.map
+//# sourceMappingURL=LanguageManager.js.map

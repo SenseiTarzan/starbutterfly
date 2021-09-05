@@ -7,38 +7,44 @@ export default class Language {
     private emote: string;
     private config: Config;
 
-    constructor(name: string,mini: string,emote:string,filename: string) {
+    constructor(name: string, mini: string, emote: string, filename: string) {
         this.name = name;
         this.mini = mini;
         this.emote = emote;
-        this.config = new Config(Main.getInstance().getDataFolder() + filename,{});
+        this.config = new Config(Main.getInstance().getDataFolder() + filename, {});
     }
 
-    public getName(): string{
+    public getName(): string {
         return this.name;
     }
 
-    public getMini(): string{
+    public getMini(): string {
         return this.mini;
     }
 
-    public getEmote(): string{
+    public getEmote(): string {
         return this.emote;
     }
 
-    public getTranslate(message: string,balise: any[],defaults: any = "no found translate"){
+    public getTranslate(message: string, balise: any[] = [], defaults: any = "no found translate") {
         this.config.reload();
         let msg = this.config.getNested(message);
-        if (msg === undefined){
-            this.config.setNested(message,defaults);
+        if (msg === undefined) {
+            this.config.setNested(message, defaults);
             this.config.save();
             msg = defaults;
         }
-        balise.forEach((value, i)=> {
-            if (typeof msg === "string") {
-                msg = msg.replace(`&${i + 1}`, value)
+        if (typeof msg === "string") {
+            while (msg.includes("%n")) {
+                msg = msg.replace("%n", "\n");
             }
-        });
+            if (balise.length > 0) {
+                balise.forEach((value, i) => {
+                    msg = msg.replace(`&${i + 1}`, value);
+
+                });
+            }
+        }
 
         return msg;
     }

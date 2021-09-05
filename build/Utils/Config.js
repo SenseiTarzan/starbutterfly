@@ -20,14 +20,19 @@ class Config {
     setAll(values) {
         this.config = values;
     }
+    has(key) {
+        return this.config[key] !== undefined;
+    }
     set(key, value) {
         this.config[key] = value;
     }
     remove(key) {
+        if (!this.has(key))
+            return;
         delete (this.config[key]);
     }
     save() {
-        fs.writeFileSync(this.filename, yamjs.stringify(this.config, 2, 2), 'utf-8');
+        fs.writeFileSync(this.filename, yamjs.stringify(this.config, 4), 'utf-8');
     }
     reload() {
         this.config = {};
@@ -42,7 +47,7 @@ class Config {
         if (!fs.existsSync(filename)) {
             this.config = this.defaults;
             if (!fs.existsSync(filename)) {
-                fs.writeFileSync(filename, yamjs.stringify(this.defaults, 0, 2), 'utf8');
+                fs.writeFileSync(filename, yamjs.stringify(this.defaults, 4), 'utf8');
             }
         }
         this.config = yamjs.load(filename);
@@ -59,14 +64,14 @@ class Config {
         base = this.config[base];
         while (vars.length > 0) {
             let baseKey = vars.shift();
+            if (base[baseKey] === undefined) {
+                base[baseKey] = {};
+            }
             if (vars.length === 0) {
                 base[baseKey] = value;
             }
             else {
                 base = base[baseKey];
-            }
-            if (base[baseKey] === undefined) {
-                base[baseKey] = {};
             }
         }
         this.nestedCache = {};
@@ -117,7 +122,7 @@ class Config {
                 if (vars.length === 0) { //final node
                     delete (currentNode[nodeName]);
                 }
-                else if (this.isLiteralObject(currentNode[nodeName])) {
+                if (this.isLiteralObject(currentNode[nodeName])) {
                     currentNode = currentNode[nodeName];
                 }
             }

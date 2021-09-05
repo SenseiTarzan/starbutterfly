@@ -26,16 +26,21 @@ export default class Config {
         this.config = values;
     }
 
+    public has(key: string){
+        return this.config[key] !== undefined;
+    }
+
     public set(key: string, value: any): void {
         this.config[key] = value;
     }
 
     public remove(key: string): void {
+        if (!this.has(key)) return;
         delete(this.config[key]);
     }
 
     public save(): void {
-        fs.writeFileSync(this.filename, yamjs.stringify(this.config,2,2),'utf-8');
+        fs.writeFileSync(this.filename, yamjs.stringify(this.config, 4),'utf-8');
     }
 
     public reload(): void {
@@ -52,9 +57,10 @@ export default class Config {
         if (!fs.existsSync(filename)) {
             this.config = this.defaults;
             if (!fs.existsSync(filename)) {
-                fs.writeFileSync(filename, yamjs.stringify(this.defaults,0,2), 'utf8');
+                fs.writeFileSync(filename, yamjs.stringify(this.defaults, 4), 'utf8');
             }
         }
+
         this.config = yamjs.load(filename);
     }
 
@@ -73,15 +79,15 @@ export default class Config {
         base = this.config[base];
         while(vars.length > 0){
             let baseKey = vars.shift();
+            if(base[baseKey] === undefined){
+                base[baseKey] = {};
+            }
             if (vars.length === 0) {
                 base[baseKey] = value;
             }else {
                 base = base[baseKey];
             }
-            
-            if(base[baseKey] === undefined){
-                base[baseKey] = {};
-            }
+
         }
         this.nestedCache = {};
     }
@@ -136,7 +142,8 @@ export default class Config {
             if (currentNode[nodeName] !== undefined) {
                 if (vars.length === 0) { //final node
                     delete(currentNode[nodeName]);
-                } else if (this.isLiteralObject(currentNode[nodeName])) {
+                }
+                if (this.isLiteralObject(currentNode[nodeName])) {
                     currentNode = currentNode[nodeName];
                 }
             } else {

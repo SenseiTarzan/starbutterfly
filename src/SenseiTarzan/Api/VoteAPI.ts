@@ -3,8 +3,11 @@ import Config from "../Utils/Config";
 import Main from "../Main";
 
 interface Vote{
+    guildId: string,
     channelId: string,
-    token: string
+    token: string,
+    time: string //hh:mm:ss,
+    role: string
 }
 export class VoteAPI {
     private data: Config;
@@ -19,6 +22,10 @@ export class VoteAPI {
         return this.data.get(type, {})[guild] ?? undefined;
     }
 
+    public getServerAllType(type:string): Object {
+        return this.data.get(type);
+    }
+
     public getTokenServer(type: string, guild: string): string |undefined{
         const data = this.getServerData(type,guild);
         return data !== undefined ? data["token"] : undefined;
@@ -28,6 +35,10 @@ export class VoteAPI {
         const types = this.data.get(type, {});
         types[guild] = data;
         this.data.set(type, types);
+        this.data.save();
+    }
+    public RemoveServerData(type: string, guild: string): void {
+        this.data.removeNested(type + "." + guild);
         this.data.save();
     }
 
@@ -43,18 +54,5 @@ export class VoteAPI {
             return true;
         }
         return false;
-    }
-
-
-    public async queryvote(type:string,guild: string){
-        const token = this.getTokenServer(type,guild);
-        if (token !== undefined) {
-            const url = this.getModalUrlVote(type,token);
-            if (url !== undefined) {
-              const data = await fetch(url)
-                const json = await data.json();
-              console.log(json);
-            }
-        }
     }
 }

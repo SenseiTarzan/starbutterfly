@@ -49,4 +49,4 @@ class LanguageAPI {
     }
 }
 exports.default = LanguageAPI;
-//# sourceMappingURL=LanguageAPI.js.map
+//# sourceMappingURL=LanguageManager.js.map

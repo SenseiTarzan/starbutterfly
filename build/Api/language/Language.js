@@ -18,7 +18,7 @@ class Language {
     getEmote() {
         return this.emote;
     }
-    getTranslate(message, balise, defaults = "no found translate") {
+    getTranslate(message, balise = [], defaults = "no found translate") {
         this.config.reload();
         let msg = this.config.getNested(message);
         if (msg === undefined) {
@@ -26,11 +26,16 @@ class Language {
             this.config.save();
             msg = defaults;
         }
-        balise.forEach((value, i) => {
-            if (typeof msg === "string") {
-                msg = msg.replace(`&${i + 1}`, value);
+        if (typeof msg === "string") {
+            while (msg.includes("%n")) {
+                msg = msg.replace("%n", "\n");
             }
-        });
+            if (balise.length > 0) {
+                balise.forEach((value, i) => {
+                    msg = msg.replace(`&${i + 1}`, value);
+                });
+            }
+        }
         return msg;
     }
 }

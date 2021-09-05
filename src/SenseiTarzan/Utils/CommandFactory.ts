@@ -10,7 +10,7 @@ export type ChannelType =
     | 'GUILD_TEXT'
     | 'GUILD_NEWS_THREAD'
     | 'GUILD_PUBLIC_THREAD'
-    | 'GUILD_PRIVATE_THREAD'
+    | 'GUILD_PRIVATE_THREAD';
 
 export default class CommandFactory {
   private commands: Collection<string, Commands>;

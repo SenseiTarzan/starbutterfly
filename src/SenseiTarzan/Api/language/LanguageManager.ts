@@ -9,7 +9,7 @@ interface LanguageConfig{
     config: string
     default: boolean | undefined
 }
-export default class LanguageAPI {
+export default class LanguageManager {
     private config: Config;
     private languages: Collection<string, Language> = new Collection<string, Language>();
     private data: Config;
@@ -34,21 +34,22 @@ export default class LanguageAPI {
 
     public loadLanguage(): void{
         for (const [keys, values] of Object.entries(this.config.getAll())){
-            if (values["default"] !== undefined && values["default"]){
-                this.registerLanguage(new Language(keys,values["mini"],values["emote"],values["config"]))
-                this.registerLanguage(new Language(keys,"default",values["emote"],values["config"]))
+            if (!this.existeLanguage(values["mini"])) {
+                this.registerLanguage(new Language(keys, values["mini"], values["emote"], values["config"]))
+                if (values["default"] !== undefined && values["default"]) {
+                    this.registerLanguage(new Language(keys, "default", values["emote"], values["config"]))
+                }
             }
-            this.registerLanguage(new Language(keys,values["mini"],values["emote"],values["config"]))
         }
     }
 
 
-    public getLanguageUser(userid: string){
-        return this.data.get(userid,"default");
+    public getLanguageUser(guildid: string){
+        return this.data.get(guildid,"default");
     }
 
-    public setLanguageUser(userid: string,language: string){
-       this.data.set(userid,language);
+    public setLanguageUser(guildid: string,language: string){
+        this.data.set(guildid,language);
         this.data.save();
     }
 

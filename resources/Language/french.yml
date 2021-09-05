@@ -1,6 +1,0 @@
-hevolia:
-  test: {add: 'salut &1', remove: 'salut &1'}
-Command:
-  error: {subcommand: 'faites &1&2 `help`|`aide`'}
-server:
-  data: {add: {server: 'vous avez ajouter un serveur dans la task de votre server'}}
