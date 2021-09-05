@@ -1,7 +1,7 @@
 .idea/*
 *.json
-/build/*
-/resources/*
-!/resources/Language/*
-/node_modules/*
+build/*
+resources/*
+!resources/Language/*
+node_modules/*
 *.yml
