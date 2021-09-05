@@ -1,6 +1,6 @@
 .idea/*
 *.json
-build/*
+/build/*
 /resources/*
 !/resources/Language/*
 /node_modules/*
