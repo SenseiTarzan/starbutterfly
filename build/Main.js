@@ -12,18 +12,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const Config_1 = require("./Utils/Config");
 const CommandFactory_1 = require("./Utils/CommandFactory");
-const VoteAPI_1 = require("./Api/VoteAPI");
+const VoteManager_1 = require("./Api/VoteManager");
 const LanguageManager_1 = require("./Api/language/LanguageManager");
 const VoteCommand_1 = require("./Commands/hevolia/VoteCommand");
 const node_fetch_1 = require("node-fetch");
+const RadioManager_1 = require("./Api/Radio/RadioManager");
+const QueueMusicManager_1 = require("./Utils/QueueMusicManager");
+const MusicCommands_1 = require("./Commands/Music/MusicCommands");
 class Main {
     constructor() {
         this.prefix = "!/";
-        this.config = new Config_1.default("resources/config.yml", { "token": "", "prefix": "!/" });
-        this.client = new discord_js_1.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"], partials: ["CHANNEL"] });
-        this.prefix = this.config.get("prefix", "!/");
-        this.commandMap = new CommandFactory_1.default(this.client, this.prefix);
         this.dataFolder = './resources/';
+        this.config = new Config_1.default(this.dataFolder + "config.yml", { "token": "", "prefix": "!/" });
+        this.client = new discord_js_1.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGE_REACTIONS", "DIRECT_MESSAGES", 'GUILD_VOICE_STATES'], partials: ["CHANNEL"] });
+        this.prefix = this.config.get("prefix", "!/");
         Main.instance = this;
         this.loadApi();
         this.loadCommands();
@@ -59,15 +61,19 @@ class Main {
             console.log(decodeAllSync(decodedoriginal[0].value[0]))
             console.log(decodeAllSync(decodedoriginal[0].value[0])[0].get(4).toString())
     
-            /*
+    }
             */
     loadApi() {
-        this.VoteApi = new VoteAPI_1.VoteAPI(this);
+        this.commandMap = new CommandFactory_1.default(this.client, this.prefix);
+        this.VoteManager = new VoteManager_1.VoteManager(this);
         this.LanguageManager = new LanguageManager_1.default(this);
+        this.radioManager = new RadioManager_1.default(this);
+        this.queueMusicManager = new QueueMusicManager_1.default(this);
     }
     loadCommands() {
         const commandsMap = this.commandMap;
         commandsMap.registerCommands(new VoteCommand_1.default());
+        commandsMap.registerCommands(new MusicCommands_1.default());
     }
     start() {
         this.client.once('ready', () => {
@@ -76,13 +82,13 @@ class Main {
         this.client.login(this.config.get("token"));
     }
     VoteInterval() {
-        setInterval(function (voteapi, client, language, embed) {
+        setInterval(function (vote_manager, client, language) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (voteapi.getServerAllType('mcbe') !== undefined) {
-                    for (const value of Object.values(voteapi.getServerAllType('mcbe'))) {
+                if (vote_manager.getServerAllType('mcbe') !== undefined) {
+                    for (const value of Object.values(vote_manager.getServerAllType('mcbe'))) {
                         const token = value['token'];
                         if (token !== undefined) {
-                            const url = voteapi.getModalUrlVote('mcbe', token);
+                            const url = vote_manager.getModalUrlVote('mcbe', token);
                             const time = value["time"];
                             if (new Date().toLocaleTimeString() == time) {
                                 if (url !== undefined) {
@@ -94,6 +100,7 @@ class Main {
                                         if (guild !== undefined) {
                                             const channel = guild.channels.cache.get(value['channelId']);
                                             if (channel instanceof discord_js_1.TextChannel || channel instanceof discord_js_1.NewsChannel) {
+                                                const embed = new discord_js_1.MessageEmbed();
                                                 embed.setFooter(client.user.username, client.user.avatarURL({
                                                     dynamic: true,
                                                     size: 256
@@ -114,7 +121,7 @@ class Main {
                     }
                 }
             });
-        }, 1000, this.VoteApi, this.client, this.LanguageManager, new discord_js_1.MessageEmbed());
+        }, 1000, this.VoteManager, this.client, this.LanguageManager);
     }
     static UUID4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -122,11 +129,17 @@ class Main {
             return v.toString(16);
         });
     }
-    getVoteApi() {
-        return this.VoteApi;
+    getVoteManager() {
+        return this.VoteManager;
     }
     getLanguageManager() {
         return this.LanguageManager;
+    }
+    getRadioManager() {
+        return this.radioManager;
+    }
+    getQueueMusicManager() {
+        return this.queueMusicManager;
     }
     getDataFolder() {
         return this.dataFolder;

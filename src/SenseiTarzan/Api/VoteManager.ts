@@ -9,7 +9,7 @@ interface Vote{
     time: string //hh:mm:ss,
     role: string
 }
-export class VoteAPI {
+export class VoteManager {
     private data: Config;
     private config: Config;
 

@@ -103,6 +103,32 @@ class SubCommand {
         return hasperm;
     }
     /**
+     * Regarde si l'utilisateur a la la permissions de la commands
+     * @param member
+     * @param groups
+     * @returns boolean
+     */
+    hasGroup(member, groups = []) {
+        let hasgroup = false;
+        if (member !== null) {
+            if (groups.length > 0) {
+                groups.forEach((group) => {
+                    if (member.roles.cache.has(group)) {
+                        hasgroup = true;
+                        return;
+                    }
+                });
+            }
+            else {
+                hasgroup = true;
+            }
+        }
+        else {
+            hasgroup = true;
+        }
+        return hasgroup;
+    }
+    /**
      * fait un test en silence de la permissions de l'utilisateur
      * @param member
      * @returns
@@ -136,11 +162,11 @@ class SubCommand {
     }
     /**
      * creer un le fonctioment de la commands
-     * @param sender
+     * @param user
      * @param message
      * @param args
      */
-    execute(sender, message, args) {
+    execute(user, message, args) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
 }

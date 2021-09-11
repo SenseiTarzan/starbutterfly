@@ -3,14 +3,17 @@ import {GuildMember, Message, User} from "discord.js";
 import {Commands} from "../Command";
 import Main from "../../Main";
 import CommandFactory from "../../Utils/CommandFactory";
-import RemoveServerVoteSubCommand from "./SubCommands/vote/removeServerVoteSubCommand";
-import AddServerVoteSubCommand from "./SubCommands/vote/AddServerVoteSubCommand";
+import PlayCommands from "./Youtube/PlayCommands";
+import SkipCommands from "./Youtube/SkipCommands";
+import VolumeCommands from "./Youtube/VolumeCommands";
+import RadioCommands from "./Youtube/RadioCommands";
 
-export default class VoteCommand extends  Commands{
+export default class MusicCommands extends  Commands{
 
     constructor() {
-        super("vote","command de vote");
-        this.setSubArguements([new AddServerVoteSubCommand,new RemoveServerVoteSubCommand]);
+        super("music","command de vote");
+        this.setAlias(['m','musique']);
+        this.setSubArguements([new RadioCommands,new PlayCommands,new SkipCommands,new VolumeCommands]);
     }
 
     public async execute(user: User, message: Message, args: Array<any>): Promise<void> {
@@ -20,7 +23,7 @@ export default class VoteCommand extends  Commands{
             const subcommand = this.getSubCommand(subarg);
             await subcommand.execute(user,message,args);
         }else {
-            await  user.send({content:language_manager.getTranslate("Command.error.subcommand",[CommandFactory.getPrefix(),this.getName()], "faites %1%2 `help`|`aide`")})
+            await  message.channel.send({content:language_manager.getTranslate("Command.error.subcommand",[CommandFactory.getPrefix(),this.getName()], "faites %1%2 `help`|`aide`")})
         }
     }
 }

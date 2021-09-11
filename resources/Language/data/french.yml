@@ -25,3 +25,7 @@ server:
             server: 'vous avez ajouter un serveur dans la task de votre server'
         removeserver: 'vous avez enlever un serveur dans la task de votre server'
         addserver: 'vous avez ajouter un serveur dans la task de votre server'
+music:
+    commands:
+        error:
+            play: 'Vous devez faire /music play <url or name>'

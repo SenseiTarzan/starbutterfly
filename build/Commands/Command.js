@@ -94,11 +94,12 @@ class Commands {
     }
     /**
      *  donne la sous-commands grâce a l'argumment
-     * @param subargs
      * @returns
+     * @param subcommands
      */
     getSubCommand(subcommands) {
-        return this.existeSubArguments(subcommands) ? this.subargs.get(subcommands) : null;
+        var _a;
+        return (_a = this.subargs.get(subcommands)) !== null && _a !== void 0 ? _a : null;
     }
     /**
      * Donne la permissions de la commands
@@ -180,11 +181,11 @@ class Commands {
     }
     /**
      * creer un le fonctioment de la commands
-     * @param sender
+     * @param user
      * @param message
      * @param args
      */
-    execute(sender, message, args) {
+    execute(user, message, args) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
 }

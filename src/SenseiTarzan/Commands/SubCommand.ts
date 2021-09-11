@@ -119,6 +119,30 @@ export abstract class SubCommand {
     return hasperm;
   }
   /**
+   * Regarde si l'utilisateur a la la permissions de la commands
+   * @param member
+   * @param groups
+   * @returns boolean
+   */
+  public hasGroup(member: GuildMember, groups: Array<string> = []): boolean {
+    let hasgroup: boolean = false;
+    if (member !== null) {
+      if (groups.length > 0) {
+        groups.forEach((group) => {
+          if (member.roles.cache.has(group)) {
+            hasgroup = true;
+            return;
+          }
+        });
+      } else {
+        hasgroup = true;
+      }
+    } else {
+      hasgroup = true;
+    }
+    return hasgroup;
+  }
+  /**
    * fait un test en silence de la permissions de l'utilisateur
    * @param member
    * @returns
@@ -156,12 +180,12 @@ export abstract class SubCommand {
 
   /**
    * creer un le fonctioment de la commands
-   * @param sender
+   * @param user
    * @param message
    * @param args
    */
   public async execute(
-    sender: User,
+    user: User,
     message: Message,
     args: Array<any>
   ): Promise<void> {}

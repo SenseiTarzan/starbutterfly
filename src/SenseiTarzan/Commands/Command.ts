@@ -12,8 +12,8 @@ import { SubCommand } from "./SubCommand";
 import {ChannelTypeResolvable} from "../Utils/CommandFactory";
 
 export abstract class Commands {
-  private name: string;
-  private description: string;
+  private readonly name: string;
+  private readonly description: string;
   private category: string;
   private channeltype: ChannelTypeResolvable[];
   private permissions: PermissionResolvable[];
@@ -113,11 +113,11 @@ export abstract class Commands {
 
 /**
  *  donne la sous-commands grâce a l'argumment
- * @param subargs 
- * @returns 
+ * @returns
+ * @param subcommands
  */
   public getSubCommand(subcommands: string): SubCommand | null {
-    return this.existeSubArguments(subcommands) ? this.subargs.get(subcommands) : null;
+    return this.subargs.get(subcommands) ?? null;
   }
 
   /**
@@ -200,12 +200,12 @@ export abstract class Commands {
   }
   /**
    * creer un le fonctioment de la commands
-   * @param sender
+   * @param user
    * @param message
    * @param args
    */
   public async execute(
-    sender: User,
+    user: User,
     message: Message,
     args: Array<any>
   ): Promise<void> {}

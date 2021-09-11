@@ -10,26 +10,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = require("../Command");
-const AddServerVoteSubCommand_1 = require("./SubCommands/vote/AddServerVoteSubCommand");
 const Main_1 = require("../../Main");
 const CommandFactory_1 = require("../../Utils/CommandFactory");
 const removeServerVoteSubCommand_1 = require("./SubCommands/vote/removeServerVoteSubCommand");
+const AddServerVoteSubCommand_1 = require("./SubCommands/vote/AddServerVoteSubCommand");
 class VoteCommand extends Command_1.Commands {
     constructor() {
         super("vote", "command de vote");
         this.setSubArguements([new AddServerVoteSubCommand_1.default, new removeServerVoteSubCommand_1.default]);
     }
-    execute(sender, message, args) {
+    execute(user, message, args) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const subarg = ((_a = args.shift()) !== null && _a !== void 0 ? _a : '').toLowerCase();
-            const languageapi = Main_1.default.getInstance().getLanguageManager().getLanguage(message.guildId);
+            const language_manager = Main_1.default.getInstance().getLanguageManager().getLanguage(message.guildId);
             if (this.existeSubArguments(subarg)) {
                 const subcommand = this.getSubCommand(subarg);
-                yield subcommand.execute(sender, message, args);
+                yield subcommand.execute(user, message, args);
             }
             else {
-                yield sender.send({ content: languageapi.getTranslate("Command.error.subcommand", [CommandFactory_1.default.getPrefix(), this.getName()], "faites %1%2 `help`|`aide`") });
+                yield user.send({ content: language_manager.getTranslate("Command.error.subcommand", [CommandFactory_1.default.getPrefix(), this.getName()], "faites %1%2 `help`|`aide`") });
             }
         });
     }

@@ -1,3 +1,5 @@
+import {createAudioResource} from "@discordjs/voice";
+
 export  default  class Radio{
     private readonly name: string;
     private readonly description: string;
@@ -16,6 +18,10 @@ export  default  class Radio{
 
     public getUrl(): string{
         return this.url;
+    }
+
+    public getAudioFlux(){
+        return createAudioResource(this.getUrl())
     }
 
     public getDescription(): string{

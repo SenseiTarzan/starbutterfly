@@ -1,5 +1,5 @@
 import {SubCommand} from "../../../SubCommand";
-import {Message, User} from "discord.js";
+import {GuildMember, Message, User} from "discord.js";
 import Main from "../../../../Main";
 
 
@@ -11,18 +11,18 @@ export default class RemoveServerVoteSubCommand extends  SubCommand{
         this.setChannelType(["GUILD_TEXT",'GUILD_NEWS']);
     }
 
-    public async execute(sender: User, message: Message, args: any): Promise<void> {
+    public async execute(user: User, message: Message, args: any): Promise<void> {
         if (this.testPermissionsSilent(message.member)) {
-            const languageapi = Main.getInstance().getLanguageManager().getLanguage(message.guildId);
+            const language_manager = Main.getInstance().getLanguageManager().getLanguage(message.guildId);
             if (this.TestChannelSilent(message.channel)) {
                 if (args.length > 0) {
-                    Main.getInstance().getVoteApi().RemoveServerData(args[0], message.guildId)
-                    await sender.send({content: languageapi.getTranslate("server.data.removeserver", [], "vous avez enlever un serveur dans la task de votre server")})
+                    Main.getInstance().getVoteManager().RemoveServerData(args[0], message.guildId)
+                    await user.send({content: language_manager.getTranslate("server.data.removeserver", [], "vous avez enlever un serveur dans la task de votre server")})
                 }else {
-                    await sender.send({content: languageapi.getTranslate("server.error.removeserver", [], "Vous devez faire /vote removeserver <type>")})
+                    await user.send({content: language_manager.getTranslate("server.error.removeserver", [], "Vous devez faire /vote removeserver <type>")})
                 }
             } else {
-                await sender.send({content: languageapi.getTranslate("server.error.channel", [], "vous ne pouvez pas mettre dans se salon")})
+                await user.send({content: language_manager.getTranslate("server.error.channel", [], "vous ne pouvez pas mettre dans se salon")})
             }
         }
     }

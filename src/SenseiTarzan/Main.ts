@@ -1,26 +1,30 @@
 import {Client, MessageEmbed, NewsChannel, TextChannel} from "discord.js";
 import Config from "./Utils/Config";
 import CommandFactory from "./Utils/CommandFactory";
-import {VoteAPI} from "./Api/VoteAPI";
+import {VoteManager} from "./Api/VoteManager";
 import LanguageManager from "./Api/language/LanguageManager";
 import VoteCommand from "./Commands/hevolia/VoteCommand";
 import fetch from "node-fetch";
+import RadioManager from "./Api/Radio/RadioManager";
+import QueueMusicManager from "./Utils/QueueMusicManager";
+import MusicCommands from "./Commands/Music/MusicCommands";
 export default class Main {
     private readonly config: Config;
     private readonly client: Client;
     private readonly prefix: string = "!/";
-    private readonly commandMap: CommandFactory;
+    private commandMap: CommandFactory;
     private readonly dataFolder: string;
     private static instance: Main;
-    private VoteApi: VoteAPI;
+    private VoteManager: VoteManager;
     private LanguageManager: LanguageManager;
+    private radioManager: RadioManager;
+    private queueMusicManager: QueueMusicManager;
 
     constructor() {
-        this.config = new Config("resources/config.yml",{"token": "", "prefix": "!/"});
-        this.client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"], partials: ["CHANNEL"] });
-        this.prefix = this.config.get("prefix","!/");
-        this.commandMap = new CommandFactory(this.client,this.prefix);
         this.dataFolder = './resources/';
+        this.config = new Config(this.dataFolder + "config.yml",{"token": "", "prefix": "!/"});
+        this.client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS","DIRECT_MESSAGE_REACTIONS", "DIRECT_MESSAGES",'GUILD_VOICE_STATES'], partials: ["CHANNEL"] });
+        this.prefix = this.config.get("prefix","!/");
         Main.instance = this;
         this.loadApi();
         this.loadCommands();
@@ -56,16 +60,20 @@ export default class Main {
         console.log(decodeAllSync(decodedoriginal[0].value[0]))
         console.log(decodeAllSync(decodedoriginal[0].value[0])[0].get(4).toString())
 
-        /*
+}
         */
     public loadApi(): void{
-        this.VoteApi = new VoteAPI(this);
+        this.commandMap = new CommandFactory(this.client,this.prefix);
+        this.VoteManager = new VoteManager(this);
         this.LanguageManager = new LanguageManager(this);
+        this.radioManager = new RadioManager(this);
+        this.queueMusicManager = new QueueMusicManager(this);
     }
 
     public loadCommands(): void{
         const commandsMap = this.commandMap;
         commandsMap.registerCommands(new VoteCommand());
+        commandsMap.registerCommands(new MusicCommands());
     }
 
     public start(): void{
@@ -76,12 +84,12 @@ export default class Main {
     }
 
     public VoteInterval(): void {
-        setInterval(async function (voteapi: VoteAPI, client: Client, language: LanguageManager, embed: MessageEmbed) {
-            if (voteapi.getServerAllType('mcbe') !== undefined) {
-                for (const value of Object.values(voteapi.getServerAllType('mcbe'))) {
+        setInterval(async function (vote_manager: VoteManager, client: Client, language: LanguageManager) {
+            if (vote_manager.getServerAllType('mcbe') !== undefined) {
+                for (const value of Object.values(vote_manager.getServerAllType('mcbe'))) {
                     const token = value['token'];
                     if (token !== undefined) {
-                        const url = voteapi.getModalUrlVote('mcbe', token);
+                        const url = vote_manager.getModalUrlVote('mcbe', token);
                         const time = value["time"];
                         if (new Date().toLocaleTimeString() == time) {
                             if (url !== undefined) {
@@ -93,6 +101,7 @@ export default class Main {
                                     if (guild !== undefined) {
                                         const channel = guild.channels.cache.get(value['channelId']);
                                         if (channel instanceof TextChannel || channel instanceof NewsChannel) {
+                                            const embed: MessageEmbed = new MessageEmbed();
                                             embed.setFooter(client.user.username, client.user.avatarURL({
                                                 dynamic: true,
                                                 size: 256
@@ -112,7 +121,7 @@ export default class Main {
                     }
                 }
             }
-        }, 1000, this.VoteApi, this.client, this.LanguageManager, new MessageEmbed())
+        }, 1000, this.VoteManager, this.client, this.LanguageManager)
     }
 
 
@@ -123,11 +132,19 @@ export default class Main {
         });
     }
 
-    public getVoteApi(): VoteAPI{
-        return this.VoteApi;
+    public getVoteManager(): VoteManager{
+        return this.VoteManager;
     }
     public getLanguageManager(): LanguageManager{
         return this.LanguageManager;
+    }
+
+    public getRadioManager(): RadioManager{
+        return this.radioManager;
+    }
+
+    public getQueueMusicManager(): QueueMusicManager{
+        return this.queueMusicManager;
     }
 
     public getDataFolder() :string{

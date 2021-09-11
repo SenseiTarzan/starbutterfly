@@ -15,7 +15,7 @@ class DecoCommands extends Command_1.Commands {
     constructor() {
         super("deco", "permet de kick le bot");
     }
-    execute(sender, message, args) {
+    execute(user, message, args) {
         return __awaiter(this, void 0, void 0, function* () {
             /**
                      message.guild.channels.cache.forEach(function (channel) {
