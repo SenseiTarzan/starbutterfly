@@ -21,11 +21,11 @@ export default class Main {
     private queueMusicManager: QueueMusicManager;
 
     constructor() {
+        Main.instance = this;
         this.dataFolder = './resources/';
         this.config = new Config(this.dataFolder + "config.yml",{"token": "", "prefix": "!/"});
         this.client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS","DIRECT_MESSAGE_REACTIONS", "DIRECT_MESSAGES",'GUILD_VOICE_STATES'], partials: ["CHANNEL"] });
         this.prefix = this.config.get("prefix","!/");
-        Main.instance = this;
         this.loadApi();
         this.loadCommands();
         this.start();

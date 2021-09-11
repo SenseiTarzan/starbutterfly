@@ -15,8 +15,10 @@ export type ChannelType =
 export default class CommandFactory {
   private commands: Collection<string, Commands>;
   private static prefix: string;
+  private static instance: CommandFactory;
   constructor(client: Client, prefix: string) {
-    this.commands = new Collection();
+    this.commands = new Collection<string, Commands>();
+    CommandFactory.instance = this;
     CommandFactory.prefix = prefix;
     client.on("messageCreate", async (message) => {
       if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -34,6 +36,9 @@ export default class CommandFactory {
 
   public static getPrefix(): string{
     return  this.prefix;
+  }
+  public static getInstance(): CommandFactory{
+    return  this.instance;
   }
 
 

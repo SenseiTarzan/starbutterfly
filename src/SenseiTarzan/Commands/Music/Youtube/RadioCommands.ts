@@ -7,7 +7,7 @@ import Main from "../../../Main";
 export default class RadioCommands extends  SubCommand{
 
     constructor() {
-        super("radio","Permet de chercher la station radio et lire la musique");
+        super("radio","Permet de chercher la station radio et ecouter la station");
         this.setAlias(['fm'])
         this.setChannelType(["GUILD_TEXT"]);
     }

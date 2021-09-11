@@ -7,7 +7,7 @@ import Main from "../../../Main";
 export default class SkipCommands extends  SubCommand {
 
     constructor() {
-        super("skip", "Permet de chercher et lire la musique");
+        super("skip", "Permet de change de musique");
         this.setAlias(['next', 'suivant'])
         this.setChannelType(["GUILD_TEXT"]);
     }

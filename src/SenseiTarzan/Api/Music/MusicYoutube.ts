@@ -1,6 +1,7 @@
 import {videoInfo} from "ytdl-core";
 import {Readable} from "stream";
 import {AudioResource, createAudioResource} from "@discordjs/voice";
+import Main from "../../Main";
 
 export  default  class MusicYoutube {
     private readonly name: string;
@@ -14,8 +15,10 @@ export  default  class MusicYoutube {
     private readonly creator: string;
     private readonly creatorIcon: string;
     private readonly video: Readable;
+    private readonly id: string;
 
     constructor(name: string, url: string, info: videoInfo, video: Readable) {
+        this.id = Main.UUID4();
         this.name = name;
         this.url = url;
         this.info = info;
@@ -27,6 +30,10 @@ export  default  class MusicYoutube {
         this.creator = info.videoDetails.author.name;
         this.creatorIcon = info.videoDetails.author.thumbnails[0] !== undefined ? info.videoDetails.author.thumbnails[0].url : "";
         this.video = video;
+    }
+
+    public getId(): string{
+        return this.id;
     }
 
     /**

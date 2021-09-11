@@ -7,7 +7,7 @@ import Main from "../../../Main";
 export default class PlayCommands extends  SubCommand{
 
     constructor() {
-        super("play","Permet de chercher et lire la musique");
+        super("play","Permet de une video Youtube et lire la video");
         this.setAlias(['join','start','lire'])
         this.setChannelType(["GUILD_TEXT"]);
     }

@@ -7,7 +7,7 @@ import Main from "../../../Main";
 export default class VolumeCommands extends  SubCommand{
 
     constructor() {
-        super("volume","Permet de chercher et lire la musique");
+        super("volume","Permet de change le volume du flux audio");
         this.setAlias(['vl','vol'])
         this.setChannelType(["GUILD_TEXT"]);
     }
@@ -17,7 +17,7 @@ export default class VolumeCommands extends  SubCommand{
             if (this.TestChannelSilent(message.channel)) {
                 if (args.length > 0) {
                     // @ts-ignore
-                    Main.getInstance().getQueueMusicManager().setVolumeDefault(message.guildId,args[0]);
+                    Main.getInstance().getQueueMusicManager().setVolumeDefault(message.guildId,parseInt(args[0]));
                     //await user.send({content: language_manager.getTranslate("music.commands.succes.play", [], "Vous aves ")})
                 }else {
                     await  message.channel.send({content: language_manager.getTranslate("music.commands.error.play", [], "Vous devez faire /music play <url or name>")})
