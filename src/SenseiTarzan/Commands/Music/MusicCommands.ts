@@ -27,7 +27,7 @@ export default class MusicCommands extends  Commands{
             const subcommand = this.getSubCommand(subarg);
             await subcommand.execute(user,message,args);
         }else {
-            await  message.channel.send({content:language_manager.getTranslate("Command.error.subcommand",[CommandFactory.getPrefix(),this.getName()], "faites %1%2 `help`|`aide`")})
+            await  message.channel.send({content:language_manager.getTranslate("Command.error.subcommand",[CommandFactory.getPrefix(),this.getName()], "faites &1&2 `help`|`aide`")})
         }
     }
 }

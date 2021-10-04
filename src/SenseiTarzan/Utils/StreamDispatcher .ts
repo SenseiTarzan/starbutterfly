@@ -507,12 +507,12 @@ export  default  class StreamDispatcher implements IStreamDispatcher{
     public deteleMessage(): void {
         if (this.current_message instanceof Message) {
             if (!this.current_message.deleted && this.current_message.deletable) {
-                this.current_message.edit({components: []}).then( async message => {
+                this.current_message.edit({components: [], content: "",embeds: []}).then(  message => {
                     if (message.deleted && message.deletable) {
-                        await message.delete().catch(() => {});
-                        this.current_message = undefined;
+                         message.delete().catch(() => {});
                     }
-                }).catch(() => {})
+                    this.current_message = undefined;
+                }).catch(() => this.current_message = undefined)
             }
         }
     }
