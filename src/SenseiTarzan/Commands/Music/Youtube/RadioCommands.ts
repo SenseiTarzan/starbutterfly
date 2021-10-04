@@ -2,12 +2,15 @@
 import {GuildMember, Message, User} from "discord.js";
 import {SubCommand} from "../../SubCommand";
 import Main from "../../../Main";
+import CommandFactory from "../../../Utils/CommandFactory";
 
 
 export default class RadioCommands extends  SubCommand{
 
     constructor() {
-        super("radio","Permet de chercher la station radio et ecouter la station");
+
+        super("radio", "music.commands.descirptions.radio");
+        //"Permet de chercher la station radio et ecouter la station"
         this.setAlias(['fm'])
         this.setChannelType(["GUILD_TEXT"]);
     }
@@ -17,10 +20,10 @@ export default class RadioCommands extends  SubCommand{
             if (this.TestChannelSilent(message.channel)) {
                 if (args.length > 0) {
                     // @ts-ignore
-                    Main.getInstance().getQueueMusicManager().addQueueMusique(message.member,message.channel,args.shift(), 'radio')
+                    await Main.getInstance().getQueueMusicManager().addQueueMusique(message.member, message.channel, args.shift(), 'radio')
                 }else {
-                    await message.channel.send({content: language_manager.getTranslate("music.commands.error.radio", [], "Vous devez faire /music radio <name radio>")})
-                }
+
+                    await  message.channel.send({content: language_manager.getTranslate("music.commands.error.commands", [CommandFactory.getPrefix(),this.getName(), this.getAlias().join(" | "),"<radio name>"], "Vous devez faire /music &1 | &2 &3")})                }
             } else {
                 await message.channel.send({content: language_manager.getTranslate("music.commands.error.channel", [], "Vous ne pouvaez pas chercher et exucter de music dans se channel")})
             }

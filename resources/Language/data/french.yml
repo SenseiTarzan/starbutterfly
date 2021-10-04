@@ -1,10 +1,3 @@
-hevolia:
-    test:
-        add: 'salut &1'
-        remove: 'salut &1'
-Command:
-    error:
-        subcommand: 'faites &1&2 `help`|`aide`'
 server:
     embed:
         title: Vote
@@ -28,4 +21,45 @@ server:
 music:
     commands:
         error:
-            play: 'Vous devez faire /music play <url or name>'
+            commands: 'Vous devez faire &1music &2 | &3 &4'
+        help:
+            line1: '**Commands:**%n'
+            title: '**`Music Help:`**'
+        descirptions:
+            radio: 'Permet de chercher la station radio et ecouter la station'
+            play: 'Permet de une video Youtube et lire la video'
+            skip: 'Permet de change de musique'
+            volume: 'Permet de change le volume du flux audio'
+            help: 'donne les commands musique existante'
+            list: 'Permet de voir les musique dans la queue'
+            return: 'Permet de rejouer la musique en ajoute ou enleve le nombre de fois'
+        return:
+            title: 'Nombre de fois a Rejouer'
+            desc: 'la Queue va etre rejouer &1 fois'
+    add:
+        queue: 'Vous avez ajoutes dans la Queue 🛒'
+    emebed:
+        youtube:
+            title: '**Titre**'
+            creator: '**Creator(s)**'
+            like: '**Like**'
+            dislike: '**DisLike**'
+            duree: '**Durée**'
+            description: '**Description**'
+        radio:
+            add: '**Radio**'
+            slogan: '**Slogan**'
+    queue:
+        embed:
+            title: '**List des Musique dans la Queue**'
+            page: 'page(s): &1 / &2'
+        empty: Vide%n
+        buttons:
+            next: Suivant
+            previous: Précédente
+        format: "> **&1** - `&2`\n"
+Commands:
+    maintenace: 'La commande &1&2 &3 est en maintenance'
+Command:
+    error:
+        subcommand: 'faites %1%2 `help`|`aide`'

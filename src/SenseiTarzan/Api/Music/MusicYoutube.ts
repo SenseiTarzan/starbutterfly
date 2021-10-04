@@ -1,12 +1,12 @@
 import {videoInfo} from "ytdl-core";
 import {Readable} from "stream";
-import {AudioResource, createAudioResource} from "@discordjs/voice";
+import {AudioResource, createAudioResource, StreamType} from "@discordjs/voice";
 import Main from "../../Main";
 
 export  default  class MusicYoutube {
     private readonly name: string;
     private readonly url: string;
-    private readonly info: object;
+    private readonly info: videoInfo;
     private readonly time: number = 0;
     private readonly likes: number;
     private readonly dislikes: number;
@@ -15,10 +15,10 @@ export  default  class MusicYoutube {
     private readonly creator: string;
     private readonly creatorIcon: string;
     private readonly video: Readable;
-    private readonly id: string;
+    private  id: string;
 
     constructor(name: string, url: string, info: videoInfo, video: Readable) {
-        this.id = Main.UUID4();
+        this.randomID();
         this.name = name;
         this.url = url;
         this.info = info;
@@ -26,6 +26,15 @@ export  default  class MusicYoutube {
         this.likes = info.videoDetails.likes ?? 0;
         this.dislikes = info.videoDetails.dislikes ?? 0;
         this.description = info.videoDetails.description;
+        if (this.description.length >= 1024) {
+            let i = 0;
+            let text = "";
+            while (i < 1024){
+                text = text + this.description[i];
+                i++;
+            }
+            this.description = text;
+        }
         this.icon = info.videoDetails.thumbnails[0] !== undefined ? info.videoDetails.thumbnails[0].url : "";
         this.creator = info.videoDetails.author.name;
         this.creatorIcon = info.videoDetails.author.thumbnails[0] !== undefined ? info.videoDetails.author.thumbnails[0].url : "";
@@ -34,6 +43,10 @@ export  default  class MusicYoutube {
 
     public getId(): string{
         return this.id;
+    }
+
+    public randomID(): void{
+         this.id = Main.UUID4();
     }
 
     /**
@@ -53,7 +66,7 @@ export  default  class MusicYoutube {
     /**
      * donne un object tout les info de la musique
      */
-    public getRawInfo(): object {
+    public getRawInfo(): videoInfo {
         return this.info;
     }
 
@@ -93,8 +106,8 @@ export  default  class MusicYoutube {
         return this.creatorIcon;
     }
 
-    public getVideo(): AudioResource<null> {
-        return createAudioResource(this.video);
+    public getVideo(): AudioResource<MusicYoutube> {
+        return createAudioResource(this.video, {metadata: this});
     }
 
     public getTime() : number{
@@ -103,6 +116,7 @@ export  default  class MusicYoutube {
 
 // if (resource.ended) return void this.emit("error", new PlayerError("Cannot play a resource that has already ended.") as unknown as AudioPlayerError);
     public getTimeString(): string {
+
         const time = {
             'h':
                 ~~(this.time / 3600),

@@ -1,4 +1,4 @@
-import {Client, MessageEmbed, NewsChannel, TextChannel} from "discord.js";
+import {Client, MessageEmbed, NewsChannel, Presence, PresenceManager, TextChannel} from "discord.js";
 import Config from "./Utils/Config";
 import CommandFactory from "./Utils/CommandFactory";
 import {VoteManager} from "./Api/VoteManager";
@@ -8,6 +8,7 @@ import fetch from "node-fetch";
 import RadioManager from "./Api/Radio/RadioManager";
 import QueueMusicManager from "./Utils/QueueMusicManager";
 import MusicCommands from "./Commands/Music/MusicCommands";
+
 export default class Main {
     private readonly config: Config;
     private readonly client: Client;

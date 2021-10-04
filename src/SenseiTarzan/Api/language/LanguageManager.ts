@@ -44,8 +44,8 @@ export default class LanguageManager {
     }
 
 
-    public getLanguageUser(guildid: string){
-        return this.data.get(guildid,"default");
+    public getLanguageGuild(guildId: string){
+        return this.data.get(guildId,"default");
     }
 
     public setLanguageUser(guildid: string,language: string){
@@ -61,7 +61,7 @@ export default class LanguageManager {
         return this.languages.has(language);
     }
 
-    public getLanguage(userid: string): Language {
-        return this.languages.get(this.getLanguageUser(userid));
+    public getLanguage(guildId: string): Language {
+        return this.languages.get(this.getLanguageGuild(guildId));
     }
 }

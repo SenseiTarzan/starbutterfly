@@ -8,13 +8,16 @@ import SkipCommands from "./Youtube/SkipCommands";
 import VolumeCommands from "./Youtube/VolumeCommands";
 import RadioCommands from "./Youtube/RadioCommands";
 import HelpCommands from "./Youtube/HelpCommands";
+import ListQueueCommands from "./Youtube/ListQueueCommands";
+import ReturnsSubCommands from "./Youtube/ReturnsSubCommands";
 
 export default class MusicCommands extends  Commands{
 
     constructor() {
-        super("music","command de vote");
+        super("music", "music.commands.descirptions.music");
+        //"command de Musique"
         this.setAlias(['m','musique']);
-        this.setSubArguements([new RadioCommands,new PlayCommands,new SkipCommands,new VolumeCommands, new HelpCommands]);
+        this.setSubArguements([new RadioCommands,new PlayCommands,new SkipCommands,new VolumeCommands, new HelpCommands, new ListQueueCommands,new ReturnsSubCommands()]);
     }
 
     public async execute(user: User, message: Message, args: Array<any>): Promise<void> {

@@ -19,6 +19,7 @@ export abstract class Commands {
   private permissions: PermissionResolvable[];
   private alias: string[];
   private subargs: Collection<string, SubCommand> = new Collection<string, SubCommand>();
+  private groups: string[];
 
   protected constructor(
     name: string,
@@ -26,7 +27,8 @@ export abstract class Commands {
     alias: string[] = [],
     category: string = "brick à brack",
     permissions: PermissionResolvable[] = [],
-    channeltype: ChannelTypeResolvable[] = ["ALL"]
+    channeltype: ChannelTypeResolvable[] = ["ALL"],
+    groups: string[] = []
   ) {
     this.name = name;
     this.description = description;
@@ -34,6 +36,7 @@ export abstract class Commands {
     this.category = category;
     this.permissions = permissions;
     this.channeltype = channeltype;
+    this.groups = groups;
   }
 
   /**
@@ -64,6 +67,21 @@ export abstract class Commands {
    */
   public setAlias(alias: string[]): void {
     this.alias = alias;
+  }
+
+  /**
+   *  Mettre des group a check
+   * @param groups
+   */
+  public setGroup(groups: string[]): void {
+    this.groups = groups;
+  }
+
+  /**
+   *  donne les group a check
+   */
+  public getGroup(): Array<String> {
+    return this.groups;
   }
 
   /**
@@ -162,6 +180,33 @@ export abstract class Commands {
       hasperm = true;
     }
     return hasperm;
+  }
+
+
+
+  /**
+   * Regarde si l'utilisateur a le role pour execute la commands
+   * @param member
+   * @returns boolean
+   */
+  public hasGroup(member: GuildMember): boolean {
+    let hasgroup: boolean = false;
+    if (member !== null) {
+      if (this.groups.length > 0) {
+        member.roles.cache.map((role) => {
+          if (this.groups.includes(role.name) || this.groups.includes(role.name.toLowerCase()) || this.groups.includes(role.name.toUpperCase())) {
+            hasgroup = true;
+            return;
+          }
+          return;
+        });
+      } else {
+        hasgroup = true;
+      }
+    } else {
+      hasgroup = true;
+    }
+    return hasgroup;
   }
   /**
    * fait un test en silence de la permissions de l'utilisateur
