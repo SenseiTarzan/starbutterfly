@@ -1,8 +1,8 @@
 # ignore all idea
-.idea/*
+.idea/**
 *.json
 build/**
-resources/*
 !resources/Language/*
+resources/**
 node_modules/**
 *.yml
