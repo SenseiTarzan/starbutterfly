@@ -196,7 +196,7 @@ export abstract class Commands {
     if (member !== null) {
       if (this.groups.length > 0) {
         member.roles.cache.map((role) => {
-          if (this.groups.includes(role.name) || this.groups.includes(role.name.toLowerCase()) || this.groups.includes(role.name.toUpperCase())) {
+          if (this.groups.includes(role.name.toLowerCase()) || this.groups.includes(role.name.toUpperCase())) {
             hasgroup = true;
             return;
           }

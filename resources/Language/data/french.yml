@@ -33,6 +33,7 @@ music:
             help: 'donne les commands musique existante'
             list: 'Permet de voir les musique dans la queue'
             return: 'Permet de rejouer la musique en ajoute ou enleve le nombre de fois'
+            volume_default: music.commands.descirptions.volume_default
         return:
             title: 'Nombre de fois a Rejouer'
             desc: 'la Queue va etre rejouer &1 fois'

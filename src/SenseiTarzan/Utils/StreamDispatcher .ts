@@ -27,6 +27,7 @@ import MusicYoutube from "../Api/Music/MusicYoutube";
 import Language from "../Api/language/Language";
 import QueueMusicManager from "./QueueMusicManager";
 import LanguageManager from "../Api/language/LanguageManager";
+import * as console from "console";
 
 const wait = promisify(setTimeout);
 interface  IStreamDispatcher{
@@ -386,35 +387,45 @@ export class StreamDispatcher implements IStreamDispatcher{
                             if (member instanceof GuildMember) {
                                 if (member.voice.channel?.id == member.guild.me.voice.channel?.id) {
 
-                                    if (i.customId === 'skip') {
-                                        let hasrole: boolean = false;
-                                        member.roles.cache.map((role) => {
-                                            if (role.name.toLowerCase() == "dj") {
-                                                hasrole = true;
-                                                return;
-                                            }
-                                        });
-                                        if (member.permissions.has("ADMINISTRATOR") || hasrole || this.whoId === member.id) {
+                                    let hasrole: boolean = false;
+                                    member.roles.cache.map((role) => {
+                                        if (role.name.toLowerCase() == "dj") {
+                                            hasrole = true;
+                                            return;
+                                        }
+                                    });
+                                    if (member.permissions.has("ADMINISTRATOR") || hasrole || this.whoId === member.id) {
+                                        if (i.customId === 'skip') {
                                             this.current_message = undefined;
-                                            await i.update({components: []}).catch(() => {});
-                                            await i.deleteReply().catch(() => {});
+                                            await i.update({components: []}).catch(() => {
+                                            });
+                                            await i.deleteReply().catch(() => {
+                                            });
                                             this.SkipMusic();
                                         }
+
+                                        if (i.customId === 'pauseorplay') {
+                                            this.PauseorPlay();
+                                            await i.update({components: [row]}).catch(() => {
+                                            });
+                                        }
+                                        if (i.customId === 'unmute') {
+                                            this.setVolumePlayer(this.getVolumeDefault());
+                                            await i.update({components: [row]}).catch(() => {
+                                            });
+                                        }
+                                        if (i.customId === 'mute') {
+                                            this.setVolumePlayer(0);
+                                            await i.update({components: [row]}).catch(() => {
+                                            });
+                                        }
                                     }
+                                }else {
+                                    await i.update({components: []}).catch(() => {});
+                                    await i.deleteReply().catch(() => {});
                                 }
 
-                                if (i.customId === 'pauseorplay') {
-                                    this.PauseorPlay();
-                                    await i.update({components: [row]}).catch(() => {});
-                                }
-                                if (i.customId === 'unmute') {
-                                    this.setVolumePlayer(50);
-                                    await i.update({components: [row]}).catch(() => {});
-                                }
-                                if (i.customId === 'mute') {
-                                    this.setVolumePlayer(0);
-                                    await i.update({components: [row]}).catch(() => {});
-                                }
+
                             }
                         });
                         this.current_message = message;
@@ -455,23 +466,24 @@ export class StreamDispatcher implements IStreamDispatcher{
                                             this.SkipMusic();
                                         }
                                     }
+                                    if (i.customId === 'pauseorplay') {
+                                        this.PauseorPlay();
+                                        await i.update({components: [row]}).catch(() => {});
+                                    }
+                                    if (i.customId === 'unmute') {
+                                        this.setVolumePlayer(this.getVolumeDefault());
+                                        await i.update({components: [row]}).catch(() => {});
+                                    }
+                                    if (i.customId === 'mute') {
+                                        this.setVolumePlayer(0);
+                                        await i.update({components: [row]}).catch(() => {});
+                                    }
                                 }else {
                                     await i.update({components: []}).catch(() => {});
                                     await i.deleteReply().catch(() => {});
                                 }
 
-                                if (i.customId === 'pauseorplay') {
-                                    this.PauseorPlay();
-                                    await i.update({components: [row]}).catch(() => {});
-                                }
-                                if (i.customId === 'unmute') {
-                                    this.setVolumePlayer(50);
-                                    await i.update({components: [row]}).catch(() => {});
-                                }
-                                if (i.customId === 'mute') {
-                                    this.setVolumePlayer(0);
-                                    await i.update({components: [row]}).catch(() => {});
-                                }
+
                             }
                         });
                         this.current_message = message;
@@ -521,14 +533,25 @@ export class StreamDispatcher implements IStreamDispatcher{
 
     public deteleMessage(): void {
         if (this.current_message instanceof Message) {
-            if (!this.current_message.deleted && this.current_message.deletable) {
-                this.current_message.edit({components: [], content: "",embeds: []}).then(  message => {
-                    console.log(message.deleted);
-                    if (!message.deleted && message.deletable) {
-                         message.delete().catch(() => {});
-                    }
-                    this.current_message = undefined;
-                }).catch(() => this.current_message = undefined)
+            try {
+                if (!this.current_message.deleted && this.current_message.deletable) {
+                    this.current_message.edit({components: [], content: "", embeds: []}).then(message => {
+                        try {
+                            if (!message.deleted && message.deletable) {
+                                message.delete().catch(() => {
+                                });
+                            }
+                        } catch (e) {
+                            console.log(e)
+                        } finally {
+                            this.current_message = undefined
+                        }
+                    }).catch(() => this.current_message = undefined)
+                }
+            } catch (e) {
+                console.log(e)
+            } finally {
+                this.current_message = undefined
             }
         }
     }
@@ -560,24 +583,6 @@ export class StreamDispatcher implements IStreamDispatcher{
         this.setVolume(volume);
         if (this.audio === undefined) return;
         this.audio.volume?.setVolume(this.volume > 0 ? this.volume / 100 : 0);
-    }
-
-    public setReturnMusique(value: number = 0) {
-        this.return = value;
-    }
-
-    public RemoveRetunrMusique(value: number = 0) {
-        this.return -= value;
-        if (this.return < 0) {
-            this.return = 0;
-        }
-    }
-
-    public addRetunrMusique(value: number = 0) {
-        this.return += value;
-        if (this.return > 50) {
-            this.return = 50
-        }
     }
 
 

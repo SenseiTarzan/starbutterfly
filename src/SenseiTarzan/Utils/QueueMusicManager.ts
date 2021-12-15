@@ -140,22 +140,6 @@ export default class QueueMusicManager {
         return true;
     }
 
-
-    public setReturnMusique(guildId: string, value: number = 0): void {
-        const streamAudio = this.getStreamDispatcher(guildId);
-        if (streamAudio !== null) streamAudio.setReturnMusique(value);
-    }
-
-    public AddReturnMusique(guildId: string, value: number = 0): void {
-        const streamAudio = this.getStreamDispatcher(guildId);
-        if (streamAudio !== null) streamAudio.addRetunrMusique(value);
-    }
-
-    public RemoveReturnMusique(guildId: string, value: number = 0): void {
-        const streamAudio = this.getStreamDispatcher(guildId);
-        if (streamAudio !== null) streamAudio.RemoveRetunrMusique(value);
-    }
-
     public SkipMusic(guildId: string, member: GuildMember | null | undefined = null, hasperm: boolean = false): boolean {
         const queueMusique = this.getQueueMusique(guildId);
         if (queueMusique !== null) {
