@@ -2,11 +2,8 @@ import Main from "../../Main";
 import Config from "../../Utils/Config";
 import {Collection} from "discord.js";
 import Radio from "./Radio";
-interface RadioFormat{
-    url: string,
-    desc: string | undefined,
-    icon: string | undefined
-}
+
+
 export  default class RadioManager {
     private config: Config;
     private radio: Collection<string, Radio> = new Collection<string, Radio>();

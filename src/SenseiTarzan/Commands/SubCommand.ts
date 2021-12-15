@@ -1,14 +1,7 @@
-import {
-  User,
-  DMChannel,
-  TextChannel,
-  NewsChannel,
-  GuildMember,
-  PermissionResolvable,
-  Message, ThreadChannel, PartialDMChannel,
-} from "discord.js";
+import {PermissionResolvable,} from "discord.js";
 import {ChannelTypeResolvable} from "../Utils/CommandFactory";
 import {Commands} from "./Command";
+
 export abstract class SubCommand extends Commands{
   protected constructor(
     name: string,

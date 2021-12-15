@@ -1,4 +1,4 @@
-import {Client, MessageEmbed, NewsChannel, Presence, PresenceManager, TextChannel} from "discord.js";
+import {Client, MessageEmbed, NewsChannel, TextChannel} from "discord.js";
 import Config from "./Utils/Config";
 import CommandFactory from "./Utils/CommandFactory";
 import {VoteManager} from "./Api/VoteManager";
@@ -136,16 +136,9 @@ export default class Main {
     public getVoteManager(): VoteManager{
         return this.VoteManager;
     }
-    public getLanguageManager(): LanguageManager{
-        return this.LanguageManager;
-    }
 
     public getRadioManager(): RadioManager{
         return this.radioManager;
-    }
-
-    public getQueueMusicManager(): QueueMusicManager{
-        return this.queueMusicManager;
     }
 
     public getDataFolder() :string{

@@ -1,7 +1,7 @@
-
-import {GuildMember, Message, User} from "discord.js";
+import {Message, User} from "discord.js";
 import {SubCommand} from "../../SubCommand";
-import Main from "../../../Main";
+import QueueMusicManager from "../../../Utils/QueueMusicManager";
+import LanguageManager from "../../../Api/language/LanguageManager";
 
 
 export default class ListQueueCommands extends  SubCommand {
@@ -13,9 +13,9 @@ export default class ListQueueCommands extends  SubCommand {
     }
 
     public async execute(user: User, message: Message, args: any): Promise<void> {
-        const language_manager = Main.getInstance().getLanguageManager().getLanguage(message.guildId);
+        const language_manager = LanguageManager.getInstance().getLanguage(message.guildId);
         if (this.TestChannelSilent(message.channel)) {
-            Main.getInstance().getQueueMusicManager().getQueueListMessage(message.guildId, message.member);
+            QueueMusicManager.getInstance().getQueueListMessage(message.guildId, message.member);
         } else {
             await message.channel.send({content: language_manager.getTranslate("music.commands.error.channel", [], "Vous ne pouvaez pas chercher et exucter de music dans se channel")})
         }

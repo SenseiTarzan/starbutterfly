@@ -1,6 +1,6 @@
 import {videoInfo} from "ytdl-core";
 import {Readable} from "stream";
-import {AudioResource, createAudioResource, StreamType} from "@discordjs/voice";
+import {AudioResource, createAudioResource} from "@discordjs/voice";
 import Main from "../../Main";
 
 export  default  class MusicYoutube {
@@ -107,7 +107,7 @@ export  default  class MusicYoutube {
     }
 
     public getVideo(): AudioResource<MusicYoutube> {
-        return createAudioResource(this.video, {metadata: this});
+        return createAudioResource(this.video, {metadata: this,inlineVolume: true});
     }
 
     public getTime() : number{

@@ -1,6 +1,7 @@
 import {SubCommand} from "../../../SubCommand";
-import {GuildMember, Message, User} from "discord.js";
+import {Message, User} from "discord.js";
 import Main from "../../../../Main";
+import LanguageManager from "../../../../Api/language/LanguageManager";
 
 
 export default class RemoveServerVoteSubCommand extends  SubCommand{
@@ -13,7 +14,7 @@ export default class RemoveServerVoteSubCommand extends  SubCommand{
 
     public async execute(user: User, message: Message, args: any): Promise<void> {
         if (this.testPermissionsSilent(message.member)) {
-            const language_manager = Main.getInstance().getLanguageManager().getLanguage(message.guildId);
+            const language_manager = LanguageManager.getInstance().getLanguage(message.guildId);
             if (this.TestChannelSilent(message.channel)) {
                 if (args.length > 0) {
                     Main.getInstance().getVoteManager().RemoveServerData(args[0], message.guildId)

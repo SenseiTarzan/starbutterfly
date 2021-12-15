@@ -1,20 +1,17 @@
 import Main from "../../Main";
 import Config from "../../Utils/Config";
 import Language from "./Language";
-import {Collection, Collector} from "discord.js";
+import {Collection} from "discord.js";
 
-interface LanguageConfig{
-    mini: string,
-    emote: string,
-    config: string
-    default: boolean | undefined
-}
+
 export default class LanguageManager {
     private config: Config;
     private languages: Collection<string, Language> = new Collection<string, Language>();
     private data: Config;
+    private static  instance: LanguageManager;
 
     constructor(client: Main) {
+        LanguageManager.instance = this;
         this.config = new Config(client.getDataFolder() + "Language/config.yml", {
             "English": {
                 "mini": "en",
@@ -30,6 +27,10 @@ export default class LanguageManager {
         });
         this.data = new Config(client.getDataFolder() + "Language/data.yml", {});
         this.loadLanguage();
+
+    }
+    public static getInstance(): LanguageManager{
+        return this.instance;
     }
 
     public loadLanguage(): void{

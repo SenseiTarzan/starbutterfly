@@ -1,8 +1,7 @@
-
-import {GuildMember, Message, User} from "discord.js";
+import {Message, User} from "discord.js";
 import {SubCommand} from "../../SubCommand";
-import Main from "../../../Main";
-import CommandFactory from "../../../Utils/CommandFactory";
+import QueueMusicManager from "../../../Utils/QueueMusicManager";
+import LanguageManager from "../../../Api/language/LanguageManager";
 
 
 export default class SkipCommands extends  SubCommand {
@@ -16,10 +15,9 @@ export default class SkipCommands extends  SubCommand {
     }
 
     public async execute(user: User, message: Message, args: any): Promise<void> {
-        const language_manager = Main.getInstance().getLanguageManager().getLanguage(message.guildId);
+        const language_manager = LanguageManager.getInstance().getLanguage(message.guildId);
         if (this.TestChannelSilent(message.channel)) {
-            const skip = Main.getInstance().getQueueMusicManager().SkipMusic(message.guildId, message.member, this.hasGroup(message.member) || this.hasPermission(message.member));
-            if (!skip) {
+            if (!QueueMusicManager.getInstance().SkipMusic(message.guildId, message.member, this.hasGroup(message.member) || this.hasPermission(message.member))) {
                 await message.channel.send({content: language_manager.getTranslate("Commands.error.nohasgroup", ["`" + this.getGroup().join("`|`") + "`", "`" + this.getPermissions().join("`|`") + "`"], "Vous de fait avoir le group &1 ou les permissions suivante(s) &2 pour pour pouvoir utilise la commands")})
             }
         } else {

@@ -64,4 +64,6 @@ Commands:
         nohasgroup: 'Vous de fait avoir le group &1 ou les permissions suivante(s) &2 pour pour pouvoir utilise la commands'
 Command:
     error:
-        subcommand: 'faites %1%2 `help`|`aide`'
+        subcommand: 'faites &1&2 `help`|`aide`'
+commands:
+    alias: '**`Alias:`** &1'

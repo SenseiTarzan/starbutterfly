@@ -1,8 +1,7 @@
-
-import {GuildMember, Message, MessageEmbed, User} from "discord.js";
+import {Message, MessageEmbed, User} from "discord.js";
 import {SubCommand} from "../../SubCommand";
-import Main from "../../../Main";
 import CommandFactory from "../../../Utils/CommandFactory";
+import LanguageManager from "../../../Api/language/LanguageManager";
 
 
 export default class HelpCommands extends  SubCommand {
@@ -16,7 +15,7 @@ export default class HelpCommands extends  SubCommand {
 
     public async execute(user: User, message: Message, args: any): Promise<void> {
         const command = CommandFactory.getInstance().getCommand("music");
-        const language_manager = Main.getInstance().getLanguageManager().getLanguage(message.guildId);
+        const language_manager = LanguageManager.getInstance().getLanguage(message.guildId);
         if (command !== undefined) {
             const subcommand = command.getSubArguements();
             let helptest =  language_manager.getTranslate( "music.commands.help.line1",[],`**Commands:**%n`);

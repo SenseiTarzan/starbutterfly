@@ -1,14 +1,16 @@
 import {
-  User,
-  DMChannel,
-  TextChannel,
-  NewsChannel,
-  GuildMember,
-  PermissionResolvable,
-  Message,
-  Collection, BitFieldResolvable, ThreadChannel, PartialDMChannel,
+    Collection,
+    DMChannel,
+    GuildMember,
+    Message,
+    NewsChannel,
+    PartialDMChannel,
+    PermissionResolvable,
+    TextChannel,
+    ThreadChannel,
+    User,
 } from "discord.js";
-import { SubCommand } from "./SubCommand";
+import {SubCommand} from "./SubCommand";
 import {ChannelTypeResolvable} from "../Utils/CommandFactory";
 
 export abstract class Commands {

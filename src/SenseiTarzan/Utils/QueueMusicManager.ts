@@ -3,7 +3,7 @@ import MusicYoutube from "../Api/Music/MusicYoutube";
 import {BitFieldResolvable, Collection, GuildMember, TextChannel,} from "discord.js";
 import Main from "../Main";
 import YoutubeUrl from "../Api/Music/YoutubeUrl";
-import StreamDispatcher from "./StreamDispatcher ";
+import {StreamDispatcher} from "./StreamDispatcher ";
 
 export type ActionTypeResolvable = BitFieldResolvable<ActionType, bigint>;
 
@@ -21,12 +21,16 @@ interface QueueMusiqueMapInterface{
 export default class QueueMusicManager {
     private queuebyguild: Collection<string, QueueMusiqueMapInterface>;
     private main: Main;
+    private static instance: QueueMusicManager;
 
     constructor(main: Main) {
         this.main = main;
         this.queuebyguild = new Collection<string, QueueMusiqueMapInterface>();
+        QueueMusicManager.instance = this;
     }
-
+    public static getInstance(): QueueMusicManager{
+        return this.instance;
+    }
     public getQueueMusique(guildId: string): QueueMusiqueMapInterface | undefined {
         return this.queuebyguild.get(guildId);
     }
@@ -73,6 +77,12 @@ export default class QueueMusicManager {
         this.queuebyguild.set(guildId, queue);
     }
 
+    public removeQueueMusique(guildId: string) {
+        if (this.queuebyguild.has(guildId)){
+            this.queuebyguild.delete(guildId);
+        }
+    }
+
 
     public getVolumeDefault(guildId: string): number | undefined {
         const streamAudio = this.getStreamDispatcher(guildId);
@@ -95,10 +105,41 @@ export default class QueueMusicManager {
         if (streamAudio !== null) streamAudio.PauseorPlay();
     }
 
-    public setVolumePlayer(guildId: string, volume: number): void {
+    public setVolumePlayer(guildId: string, volume: number, member: GuildMember | null | undefined = null, hasperm: boolean = false): boolean {
         const streamAudio = this.getStreamDispatcher(guildId);
-        if (streamAudio !== null) streamAudio.setVolumePlayer(volume);
+
+        if (streamAudio === null) {
+            return false;
+        }
+        if (member !== null && member !== undefined) {
+            if (streamAudio.whoId !== member.id || !hasperm) {
+                return false;
+            }
+            streamAudio.setVolumePlayer(volume);
+        } else {
+            streamAudio.setVolumePlayer(volume);
+        }
+
+        return true;
     }
+    public setVolumeDefaultPlayer(guildId: string, volume: number, member: GuildMember | null | undefined = null, hasperm: boolean = false): boolean {
+        const streamAudio = this.getStreamDispatcher(guildId);
+
+        if (streamAudio === null) {
+            return false;
+        }
+        if (member !== null && member !== undefined) {
+            if (streamAudio.whoId !== member.id || !hasperm) {
+                return false;
+            }
+            streamAudio.setVolumeDefault(volume);
+        } else {
+            streamAudio.setVolumeDefault(volume);
+        }
+
+        return true;
+    }
+
 
     public setReturnMusique(guildId: string, value: number = 0): void {
         const streamAudio = this.getStreamDispatcher(guildId);

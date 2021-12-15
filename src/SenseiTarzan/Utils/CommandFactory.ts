@@ -1,5 +1,5 @@
 import {BitFieldResolvable, Client, Collection} from "discord.js";
-import { Commands } from "../Commands/Command";
+import {Commands} from "../Commands/Command";
 
 export type ChannelTypeResolvable = BitFieldResolvable<ChannelType, bigint>;
 

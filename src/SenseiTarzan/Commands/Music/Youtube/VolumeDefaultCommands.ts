@@ -5,14 +5,13 @@ import QueueMusicManager from "../../../Utils/QueueMusicManager";
 import LanguageManager from "../../../Api/language/LanguageManager";
 
 
-export default class RadioCommands extends  SubCommand{
+export default class VolumeDefaultCommands extends  SubCommand{
 
     constructor() {
-
-        super("radio", "music.commands.descirptions.radio");
-        //"Permet de chercher la station radio et ecouter la station"
-        this.setAlias(['fm'])
+        super("volume_default", "music.commands.descirptions.volume_default");
         this.setChannelType(["GUILD_TEXT"]);
+        this.setPermissions(["ADMINISTRATOR", "MUTE_MEMBERS"]);
+        this.setGroup(["DJ"])
     }
 
     public async execute(user: User, message: Message, args: any): Promise<void> {
@@ -20,10 +19,9 @@ export default class RadioCommands extends  SubCommand{
             if (this.TestChannelSilent(message.channel)) {
                 if (args.length > 0) {
                     // @ts-ignore
-                    await QueueMusicManager.getInstance().addQueueMusique(message.member, message.channel, args.shift(), 'radio')
+                    QueueMusicManager.getInstance().setVolumeDefaultPlayer(message.guildId,parseInt(args[0]),message.member,this.hasGroup(message.member) || this.hasPermission(message.member));
                 }else {
-
-                    await  message.channel.send({content: language_manager.getTranslate("music.commands.error.commands", [CommandFactory.getPrefix(),this.getName(), this.getAlias().join(" | "),"<radio name>"], "Vous devez faire /music &1 | &2 &3")})                }
+                    await  message.channel.send({content: language_manager.getTranslate("music.commands.error.commands", [CommandFactory.getPrefix(),this.getName(), this.getAlias().join(" | "),"<volume>"], "Vous devez faire /music &1 | &2 &3")})                }
             } else {
                 await message.channel.send({content: language_manager.getTranslate("music.commands.error.channel", [], "Vous ne pouvaez pas chercher et exucter de music dans se channel")})
             }

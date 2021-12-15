@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import Config from "../Utils/Config";
 import Main from "../Main";
 

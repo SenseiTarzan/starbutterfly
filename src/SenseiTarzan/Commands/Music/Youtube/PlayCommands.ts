@@ -1,8 +1,8 @@
-
-import {GuildMember, Message, User} from "discord.js";
+import {Message, User} from "discord.js";
 import {SubCommand} from "../../SubCommand";
-import Main from "../../../Main";
 import CommandFactory from "../../../Utils/CommandFactory";
+import QueueMusicManager from "../../../Utils/QueueMusicManager";
+import LanguageManager from "../../../Api/language/LanguageManager";
 
 
 export default class PlayCommands extends  SubCommand{
@@ -14,11 +14,11 @@ export default class PlayCommands extends  SubCommand{
     }
 
     public async execute(user: User, message: Message, args: any): Promise<void> {
-            const language_manager = Main.getInstance().getLanguageManager().getLanguage(message.guildId);
+            const language_manager = LanguageManager.getInstance().getLanguage(message.guildId);
             if (this.TestChannelSilent(message.channel)) {
                 if (args.length > 0) {
                     // @ts-ignore
-                    await Main.getInstance().getQueueMusicManager().addQueueMusique(message.member,message.channel,args.shift(), 'youtube')
+                    await QueueMusicManager.getInstance().addQueueMusique(message.member,message.channel,args.shift(), 'youtube')
                 }else {
                     await  message.channel.send({content: language_manager.getTranslate("music.commands.error.commands", [CommandFactory.getPrefix(),this.getName(), this.getAlias().join(" | "),"<name or url>"], "Vous devez faire &1music &2 | &3 &4")})                  }
             } else {
