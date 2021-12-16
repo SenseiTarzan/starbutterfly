@@ -11,7 +11,7 @@ export default class Config {
 
     constructor(filename: string, defaults: object = {}) {
         this.defaults = defaults;
-        this.load(this.filename = filename);
+        this.load(this.filename = filename.replace( new RegExp("/", "g"),"\\"));
     }
 
     public get(key: string, value: any = undefined): any {
@@ -40,7 +40,15 @@ export default class Config {
     }
 
     public save(): void {
-        fs.writeFileSync(this.filename, yamjs.stringify(this.config, 4),'utf-8');
+        fs.writeFileSync(this.filename, this.ConfigtoString(),'utf-8');
+    }
+
+    public getFileName(): string{
+        return this.filename;
+    }
+
+    public ConfigtoString(): string{
+        return yamjs.stringify(this.config, 4);
     }
 
     public reload(): void {

@@ -18,12 +18,12 @@ export default class RemoveServerVoteSubCommand extends  SubCommand{
             if (this.TestChannelSilent(message.channel)) {
                 if (args.length > 0) {
                     Main.getInstance().getVoteManager().RemoveServerData(args[0], message.guildId)
-                    await user.send({content: language_manager.getTranslate("server.data.removeserver", [], "vous avez enlever un serveur dans la task de votre server")})
+                    await user.send({content: language_manager.getTranslate(message.guildId, "server.data.removeserver", [], "vous avez enlever un serveur dans la task de votre server")})
                 }else {
-                    await user.send({content: language_manager.getTranslate("server.error.removeserver", [], "Vous devez faire /vote removeserver <type>")})
+                    await user.send({content: language_manager.getTranslate(message.guildId, "server.error.removeserver", [], "Vous devez faire /vote removeserver <type>")})
                 }
             } else {
-                await user.send({content: language_manager.getTranslate("server.error.channel", [], "vous ne pouvez pas mettre dans se salon")})
+                await user.send({content: language_manager.getTranslate(message.guildId, "server.error.channel", [], "vous ne pouvez pas mettre dans se salon")})
             }
         }
     }

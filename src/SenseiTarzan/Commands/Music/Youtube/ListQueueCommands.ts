@@ -17,7 +17,7 @@ export default class ListQueueCommands extends  SubCommand {
         if (this.TestChannelSilent(message.channel)) {
             QueueMusicManager.getInstance().getQueueListMessage(message.guildId, message.member);
         } else {
-            await message.channel.send({content: language_manager.getTranslate("music.commands.error.channel", [], "Vous ne pouvaez pas chercher et exucter de music dans se channel")})
+            await message.channel.send({content: language_manager.getTranslate(message.guildId, "music.commands.error.channel", [], "Vous ne pouvaez pas chercher et exucter de music dans se channel")})
         }
     }
 }

@@ -155,11 +155,11 @@ export class StreamDispatcher implements IStreamDispatcher{
         let max_page = Math.round(this.queue.length / 10) === 0 ? 1 : Math.round(this.queue.length / 10);
         const list_embed = new MessageEmbed();
         list_embed.setColor([139, 0, 0]);
-        list_embed.setTitle(this.language.getTranslate("music.queue.embed.title", [], "**List des Musique dans la Queue**"));
-        list_embed.setDescription(this.getQueueListString(this.channel.guildId, page) + this.language.getTranslate("music.queue.embed.page", [page + 1, max_page], "page(s): &1 / &2"));
+        list_embed.setTitle(this.language.getTranslate(this.channel.guild.id,"music.queue.embed.title", [], "**List des Musique dans la Queue**"));
+        list_embed.setDescription(this.getQueueListString(this.channel.guildId, page) + this.language.getTranslate(this.channel.guild.id,"music.queue.embed.page", [page + 1, max_page], "page(s): &1 / &2"));
         list_embed.setAuthor(Main.getInstance().getClient().user.username, Main.getInstance().getClient().user.avatarURL());
         const filter = i => i.customId === 'next' || i.customId === 'previous';
-        this.channel.send({content: `${member}`, embeds: [list_embed], components: [new MessageActionRow().addComponents(new MessageButton().setCustomId("next").setLabel(this.language.getTranslate("music.queue.buttons.next", [], "Suivant")).setStyle("DANGER"))]}).then(message => {
+        this.channel.send({content: `${member}`, embeds: [list_embed], components: [new MessageActionRow().addComponents(new MessageButton().setCustomId("next").setLabel(this.language.getTranslate(this.channel.guild.id,"music.queue.buttons.next", [], "Suivant")).setStyle("DANGER"))]}).then(message => {
             const collector = message.createMessageComponentCollector({filter});
             collector.on('collect', async i => {
                 const member = i.member;
@@ -178,23 +178,23 @@ export class StreamDispatcher implements IStreamDispatcher{
                     }
                     const list_embed_buttons = new MessageEmbed();
                     list_embed_buttons.setColor([139, 0, 0]);
-                    list_embed_buttons.setTitle(this.language.getTranslate("music.queue.embed.title", [], "**List des Musique dans la Queue**"));
-                    list_embed.setDescription(this.getQueueListString(this.channel.guildId, page) + this.language.getTranslate("music.queue.embed.page", [page + 1, max_page], "page(s): &1 / &2"));
+                    list_embed_buttons.setTitle(this.language.getTranslate(this.channel.guild.id,"music.queue.embed.title", [], "**List des Musique dans la Queue**"));
+                    list_embed.setDescription(this.getQueueListString(this.channel.guildId, page) + this.language.getTranslate(this.channel.guild.id, "music.queue.embed.page", [page + 1, max_page], "page(s): &1 / &2"));
                     list_embed_buttons.setAuthor(Main.getInstance().getClient().user.username, Main.getInstance().getClient().user.avatarURL());
-                    let row: MessageActionRow = new MessageActionRow().addComponents(new MessageButton().setCustomId("next").setLabel(this.language.getTranslate("music.queue.buttons.next", [], "Suivant")).setStyle("DANGER"));
+                    let row: MessageActionRow = new MessageActionRow().addComponents(new MessageButton().setCustomId("next").setLabel(this.language.getTranslate(this.channel.guild.id, "music.queue.buttons.next", [], "Suivant")).setStyle("DANGER"));
                     if (page > 0) {
                         row = new MessageActionRow().addComponents(
-                            new MessageButton().setCustomId("previous").setLabel(this.language.getTranslate("music.queue.buttons.previous", [], "Précédente")).setStyle("DANGER"),
-                            new MessageButton().setCustomId("next").setLabel(this.language.getTranslate("music.queue.buttons.next", [], "Suivant")).setStyle("DANGER"));
+                            new MessageButton().setCustomId("previous").setLabel(this.language.getTranslate(this.channel.guild.id, "music.queue.buttons.previous", [], "Précédente")).setStyle("DANGER"),
+                            new MessageButton().setCustomId("next").setLabel(this.language.getTranslate(this.channel.guild.id, "music.queue.buttons.next", [], "Suivant")).setStyle("DANGER"));
                     }
                     if (page > 0 && (page + 1) < max_page) {
                         row = new MessageActionRow().addComponents(
-                            new MessageButton().setCustomId("previous").setLabel(this.language.getTranslate("music.queue.buttons.previous", [], "Précédente")).setStyle("DANGER"),
-                            new MessageButton().setCustomId("next").setLabel(this.language.getTranslate("music.queue.buttons.next", [], "Suivant")).setStyle("DANGER"));
+                            new MessageButton().setCustomId("previous").setLabel(this.language.getTranslate(this.channel.guild.id, "music.queue.buttons.previous", [], "Précédente")).setStyle("DANGER"),
+                            new MessageButton().setCustomId("next").setLabel(this.language.getTranslate(this.channel.guild.id, "music.queue.buttons.next", [], "Suivant")).setStyle("DANGER"));
                     }
                     if (page > 0 && (page + 1) >= max_page) {
                         row = new MessageActionRow().addComponents(
-                            new MessageButton().setCustomId("previous").setLabel(this.language.getTranslate("music.queue.buttons.previous", [], "Précédente")).setStyle("DANGER"));
+                            new MessageButton().setCustomId("previous").setLabel(this.language.getTranslate(this.channel.guild.id, "music.queue.buttons.previous", [], "Précédente")).setStyle("DANGER"));
                     }
                     await i.update({content: `${member}`, embeds: [list_embed], components: [row]});
                 }
@@ -204,13 +204,13 @@ export class StreamDispatcher implements IStreamDispatcher{
     }
 
     public getQueueListString(guilId: string, index: number = 0): string {
-        if (this.queue.length <= 0) return this.language.getTranslate("music.queue.empty", [], "Vide%n");
+        if (this.queue.length <= 0) return this.language.getTranslate(this.channel.guild.id, "music.queue.empty", [], "Vide%n");
         let text: string = "";
         let i = index > 0 ? index * 10 : 0;
         while (i <= (index > 0 ? index * 10 : 0) + 9) {
             const music: MusicYoutube | Radio | undefined = this.queue[i] ?? undefined;
             if (music !== undefined) {
-                text = text + this.language.getTranslate("music.queue.format", [i + 1, music.getName()], "> **&1** - `&2`\n");
+                text = text + this.language.getTranslate(this.channel.guild.id, "music.queue.format", [i + 1, music.getName()], "> **&1** - `&2`\n");
             }
             i++;
         }
@@ -378,7 +378,7 @@ export class StreamDispatcher implements IStreamDispatcher{
                     let name = audio.getName();
                     name = name.charAt(0).toUpperCase() + name.slice(1)
                     embed.setTitle(name);
-                    embed.addField(this.language.getTranslate("music.emebed.radio.slogan", [], "**Slogan**"), "`" + audio.getDescription() + "`");
+                    embed.addField(this.language.getTranslate(this.channel.guild.id, "music.emebed.radio.slogan", [], "**Slogan**"), "`" + audio.getDescription() + "`");
                     embed.setThumbnail(audio.getIconUrl());
                     this.channel.send({embeds: [embed], components: [row]}).then(message => {
                         const collector = message.createMessageComponentCollector({filter});
@@ -433,11 +433,11 @@ export class StreamDispatcher implements IStreamDispatcher{
                 } else if (audio instanceof MusicYoutube) {
                     embed.setTitle(audio.getName());
                     embed.setURL(audio.getUrl());
-                    embed.addField(this.language.getTranslate("music.emebed.youtube.creator", [], "**Creator(s)**"), audio.getCreator(), false);
-                    embed.addField(this.language.getTranslate("music.emebed.youtube.like", [], "**Like**"), audio.getLikes().toString(), true);
-                    embed.addField(this.language.getTranslate("music.emebed.youtube.dislike", [], "**DisLike**"), audio.getDisLikes().toString(), true);
-                    embed.addField(this.language.getTranslate("music.emebed.youtube.duree", [], "**Durée**"), audio.getTimeString(), true);
-                    embed.addField(this.language.getTranslate("music.emebed.youtube.description", [], "**Description**"), audio.getDescription(), false);
+                    embed.addField(this.language.getTranslate(this.channel.guild.id, "music.emebed.youtube.creator", [], "**Creator(s)**"), audio.getCreator(), false);
+                    embed.addField(this.language.getTranslate(this.channel.guild.id, "music.emebed.youtube.like", [], "**Like**"), audio.getLikes().toString(), true);
+                    embed.addField(this.language.getTranslate(this.channel.guild.id, "music.emebed.youtube.dislike", [], "**DisLike**"), audio.getDisLikes().toString(), true);
+                    embed.addField(this.language.getTranslate(this.channel.guild.id, "music.emebed.youtube.duree", [], "**Durée**"), audio.getTimeString(), true);
+                    embed.addField(this.language.getTranslate(this.channel.guild.id, "music.emebed.youtube.description", [], "**Description**"), audio.getDescription(), false);
                     embed.setThumbnail(audio.getCreatorIcon());
                     embed.setImage(audio.getIconUrl());
                     this.channel.send({embeds: [embed], components: [row]}).then(message => {
@@ -493,14 +493,14 @@ export class StreamDispatcher implements IStreamDispatcher{
             } else if (types == "add") {
                 const embed = new MessageEmbed();
                 embed.setColor([139, 0, 0]);
-                embed.setTitle(this.language.getTranslate("music.add.queue", [], "Vous avez ajoutes dans la Queue 🛒"));
+                embed.setTitle(this.language.getTranslate(this.channel.guild.id, "music.add.queue", [], "Vous avez ajoutes dans la Queue 🛒"));
                 if (audio instanceof Radio) {
                     let name = audio.getName();
                     name = name.charAt(0).toUpperCase() + name.slice(1)
-                    embed.addField(this.language.getTranslate("music.emebed.radio.add", [], "**Radio**"), name);
+                    embed.addField(this.language.getTranslate(this.channel.guild.id, "music.emebed.radio.add", [], "**Radio**"), name);
                 } else if (audio instanceof MusicYoutube) {
-                    embed.addField(this.language.getTranslate("music.emebed.youtube.title", [], "**Titre**"), audio.getName());
-                    embed.addField(this.language.getTranslate("music.emebed.youtube.creator", [], "**Creator(s)**"), audio.getCreator());
+                    embed.addField(this.language.getTranslate(this.channel.guild.id, "music.emebed.youtube.title", [], "**Titre**"), audio.getName());
+                    embed.addField(this.language.getTranslate(this.channel.guild.id, "music.emebed.youtube.creator", [], "**Creator(s)**"), audio.getCreator());
                 }
                 this.channel.send({embeds: [embed]}).catch(() => {});
             }

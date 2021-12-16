@@ -1,15 +1,19 @@
-import {Message, User} from "discord.js";
 import {Commands} from "../Command";
-import CommandFactory from "../../Utils/CommandFactory";
-import RemoveServerVoteSubCommand from "./SubCommands/vote/removeServerVoteSubCommand";
-import AddServerVoteSubCommand from "./SubCommands/vote/AddServerVoteSubCommand";
+import {Message,  User} from "discord.js";
 import LanguageManager from "../../Api/language/LanguageManager";
+import ChangeLangSubCommand from "./LangugageSubCommand/ChangeLangSubCommand";
+import CommandFactory from "../../Utils/CommandFactory";
+import GetLangCustomSubCommand from "./LangugageSubCommand/getLangCustomSubCommand";
+import SetLangCustomSubCommand from "./LangugageSubCommand/setLangCustomSubCommand";
 
-export default class VoteCommand extends  Commands{
-
+export default class LanguageCommands extends Commands {
     constructor() {
-        super("vote","vote.command.descrpition");
-        this.setSubArguements([new AddServerVoteSubCommand,new RemoveServerVoteSubCommand]);
+        super("lang", "lang.command.description");
+        this.setSubArguements([
+            new ChangeLangSubCommand,
+            new GetLangCustomSubCommand,
+            new SetLangCustomSubCommand,
+        ])
     }
 
     public async execute(user: User, message: Message, args: Array<any>): Promise<void> {

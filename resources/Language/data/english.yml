@@ -1,1 +1,31 @@
-{}
+lang:
+    set-languages: '&1 You are set &2 language'
+    command:
+        description: lang.command.description
+help:
+    commands:
+        help:
+            line1: '**Commands:**%n'
+        desc:
+            music: 'Vous donne  les commands existante sur music'
+        title: '**`Command Help:`**'
+    command:
+        description: help.command.description
+pat:
+    commands:
+        description: pat.commands.description
+music:
+    commands:
+        help:
+            line1: '**Commands:**%n'
+            title: '**`Music Help:`**'
+        descirptions:
+            help: music.commands.descirptions.help
+            radio: music.commands.descirptions.radio
+            play: music.commands.descirptions.play
+            skip: music.commands.descirptions.skip
+            volume: music.commands.descirptions.volume
+            list: music.commands.descirptions.list
+            volume_default: music.commands.descirptions.volume_default
+commands:
+    alias: '**`Alias:`** &1'

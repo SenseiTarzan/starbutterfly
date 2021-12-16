@@ -20,9 +20,9 @@ export default class PlayCommands extends  SubCommand{
                     // @ts-ignore
                     await QueueMusicManager.getInstance().addQueueMusique(message.member,message.channel,args.shift(), 'youtube')
                 }else {
-                    await  message.channel.send({content: language_manager.getTranslate("music.commands.error.commands", [CommandFactory.getPrefix(),this.getName(), this.getAlias().join(" | "),"<name or url>"], "Vous devez faire &1music &2 | &3 &4")})                  }
+                    await  message.channel.send({content: language_manager.getTranslate(message.guildId, "music.commands.error.commands", [CommandFactory.getPrefix(),this.getName(), this.getAlias().join(" | "),"<name or url>"], "Vous devez faire &1music &2 | &3 &4")})                  }
             } else {
-                await message.channel.send({content: language_manager.getTranslate("music.commands.error.channel", [], "Vous ne pouvaez pas chercher et exucter de music dans se channel")})
+                await message.channel.send({content: language_manager.getTranslate(message.guildId, "music.commands.error.channel", [], "Vous ne pouvaez pas chercher et exucter de music dans se channel")})
             }
     }
 

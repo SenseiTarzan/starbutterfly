@@ -24,12 +24,12 @@ export default class AddServerVoteSubCommand extends  SubCommand{
                         time: args[2],
                         role: args[3]
                     });
-                    await user.send({content: language_manager.getTranslate("server.data.addserver", [], "vous avez ajouter un serveur dans la task de votre server")})
+                    await user.send({content: language_manager.getTranslate(message.guildId, "server.data.addserver", [], "vous avez ajouter un serveur dans la task de votre server")})
                 }else {
-                    await user.send({content: language_manager.getTranslate("server.error.addserveur", [], "Vous devez faire /vote addserver  <type>  <token> <time> <role_id>")})
+                    await user.send({content: language_manager.getTranslate(message.guildId, "server.error.addserveur", [], "Vous devez faire /vote addserver  <type>  <token> <time> <role_id>")})
                 }
             } else {
-                await user.send({content: language_manager.getTranslate("server.error.channel", [], "vous ne pouvez pas mettre dans se salon")})
+                await user.send({content: language_manager.getTranslate(message.guildId, "server.error.channel", [], "vous ne pouvez pas mettre dans se salon")})
             }
         }
     }

@@ -21,9 +21,9 @@ export default class VolumeDefaultCommands extends  SubCommand{
                     // @ts-ignore
                     QueueMusicManager.getInstance().setVolumeDefaultPlayer(message.guildId,parseInt(args[0]),message.member,this.hasGroup(message.member) || this.hasPermission(message.member));
                 }else {
-                    await  message.channel.send({content: language_manager.getTranslate("music.commands.error.commands", [CommandFactory.getPrefix(),this.getName(), this.getAlias().join(" | "),"<volume>"], "Vous devez faire /music &1 | &2 &3")})                }
+                    await  message.channel.send({content: language_manager.getTranslate(message.guildId, "music.commands.error.commands", [CommandFactory.getPrefix(),this.getName(), this.getAlias().join(" | "),"<volume>"], "Vous devez faire /music &1 | &2 &3")})                }
             } else {
-                await message.channel.send({content: language_manager.getTranslate("music.commands.error.channel", [], "Vous ne pouvaez pas chercher et exucter de music dans se channel")})
+                await message.channel.send({content: language_manager.getTranslate(message.guildId, "music.commands.error.channel", [], "Vous ne pouvaez pas chercher et exucter de music dans se channel")})
             }
     }
 

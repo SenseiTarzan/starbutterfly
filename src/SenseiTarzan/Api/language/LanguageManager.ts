@@ -21,12 +21,13 @@ export default class LanguageManager {
             "Francais": {
                 "mini": "fr",
                 "emote": "🇫🇷",
-                "config": "Language/french.yml",
+                "config": "Language/francais.yml",
                 "default": true
             }
         });
         this.data = new Config(client.getDataFolder() + "Language/data.yml", {});
         this.loadLanguage();
+        this.loadLanguageGuild();
 
     }
     public static getInstance(): LanguageManager{
@@ -44,14 +45,30 @@ export default class LanguageManager {
         }
     }
 
+    public loadLanguageGuild(): void{
+        for (const [guild, info] of Object.entries(this.data.getAll())) {
+            this.languages.get(info.toString()).addCustomLanguage(guild);
+        }
+    }
+
+    public addLanguageGuild(guild: string, language: string): void{
+        this.languages.get(language).addCustomLanguage(guild);
+    }
+
+    public removeCustomLanguage(guild: string, language: string): void{
+        this.languages.get(language).removeCustomLanguage(guild);
+    }
+
 
     public getLanguageGuild(guildId: string){
         return this.data.get(guildId,"default");
     }
 
-    public setLanguageUser(guildid: string,language: string){
+    public setLanguageGuild(guildid: string, language: string){
+        this.removeCustomLanguage(guildid,this.getLanguageGuild(guildid))
         this.data.set(guildid,language);
         this.data.save();
+        this.addLanguageGuild(guildid,language);
     }
 
     public registerLanguage(language: Language) {

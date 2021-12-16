@@ -8,6 +8,10 @@ import fetch from "node-fetch";
 import RadioManager from "./Api/Radio/RadioManager";
 import QueueMusicManager from "./Utils/QueueMusicManager";
 import MusicCommands from "./Commands/Music/MusicCommands";
+import PatCommand from "./Commands/Reaction/PatCommand";
+import HelpCommands from "./Commands/Manager/HelpCommands";
+import LanguageCommands from "./Commands/Manager/LanguageCommands";
+import * as path from "path";
 
 export default class Main {
     private readonly config: Config;
@@ -23,7 +27,7 @@ export default class Main {
 
     constructor() {
         Main.instance = this;
-        this.dataFolder = './resources/';
+        this.dataFolder = path.join(path.dirname(__dirname),"resources\\");
         this.config = new Config(this.dataFolder + "config.yml",{"token": "", "prefix": "!/"});
         this.client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS","DIRECT_MESSAGE_REACTIONS", "DIRECT_MESSAGES",'GUILD_VOICE_STATES'], partials: ["CHANNEL"] });
         this.prefix = this.config.get("prefix","!/");
@@ -43,8 +47,11 @@ export default class Main {
 
     public loadCommands(): void{
         const commandsMap = this.commandMap;
-        commandsMap.registerCommands(new VoteCommand());
+        commandsMap.registerCommands(new HelpCommands());
+        commandsMap.registerCommands(new LanguageCommands());
         commandsMap.registerCommands(new MusicCommands());
+        commandsMap.registerCommands(new PatCommand());
+        commandsMap.registerCommands(new VoteCommand());
     }
 
     public start(): void{
@@ -77,11 +84,11 @@ export default class Main {
                                                 dynamic: true,
                                                 size: 256
                                             }));
-                                            embed.setTitle(language.getLanguage('fra').getTranslate('server.embed.title'));
+                                            embed.setTitle(language.getLanguage('fra').getTranslate(channel.guildId,'server.embed.title'));
                                             embed.setURL(json["url"] + 'vote/');
-                                            embed.addField(language.getLanguage('fra').getTranslate('server.embed.explication.title'), language.getLanguage('fra').getTranslate('server.embed.explication.desc'));
-                                            embed.addField(language.getLanguage('fra').getTranslate('server.embed.notif.title'), language.getLanguage('fra').getTranslate('server.embed.notif.desc', [json["url"]]));
-                                            embed.addField(language.getLanguage('fra').getTranslate('server.embed.Statistique.title'), language.getLanguage('fra').getTranslate('server.embed.Statistique.desc', [json["votes"], json["rank"], time.split(":")[0] + "h", json["players"]]));
+                                            embed.addField(language.getLanguage('fra').getTranslate(channel.guildId,'server.embed.explication.title'), language.getLanguage('fra').getTranslate(channel.guildId,'server.embed.explication.desc'));
+                                            embed.addField(language.getLanguage('fra').getTranslate(channel.guildId,'server.embed.notif.title'), language.getLanguage('fra').getTranslate(channel.guildId,'channel.guildId,server.embed.notif.desc', [json["url"]]));
+                                            embed.addField(language.getLanguage('fra').getTranslate(channel.guildId,'server.embed.Statistique.title'), language.getLanguage('fra').getTranslate(channel.guildId,'server.embed.Statistique.desc', [json["votes"], json["rank"], time.split(":")[0] + "h", json["players"]]));
                                             embed.setThumbnail(guild.iconURL({dynamic: true, size: 256}));
                                             await channel.send({embeds: [embed], content: `<@&${value['role']}>`});
                                         }

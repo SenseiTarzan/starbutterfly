@@ -96,4 +96,12 @@ export default class CommandFactory {
       return null;
     }
   }
+
+  public getAllCommands(): Collection<string, Commands> | []{
+    try {
+      return this.commands
+    } catch (error) {
+      return [];
+    }
+  }
 }

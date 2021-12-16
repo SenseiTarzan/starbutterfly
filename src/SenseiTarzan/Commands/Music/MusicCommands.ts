@@ -5,7 +5,7 @@ import PlayCommands from "./Youtube/PlayCommands";
 import SkipCommands from "./Youtube/SkipCommands";
 import VolumeCommands from "./Youtube/VolumeCommands";
 import RadioCommands from "./Youtube/RadioCommands";
-import HelpCommands from "./Youtube/HelpCommands";
+import HelpMusicCommands from "./Youtube/HelpMusicCommands";
 import ListQueueCommands from "./Youtube/ListQueueCommands";
 import LanguageManager from "../../Api/language/LanguageManager";
 import VolumeDefaultCommands from "./Youtube/VolumeDefaultCommands";
@@ -17,7 +17,7 @@ export default class MusicCommands extends  Commands{
         //"command de Musique"
         this.setAlias(['m','musique']);
         this.setSubArguements([
-            new HelpCommands,
+            new HelpMusicCommands,
             new RadioCommands,
             new PlayCommands,
             new SkipCommands,
@@ -34,7 +34,7 @@ export default class MusicCommands extends  Commands{
             const subcommand = this.getSubCommand(subarg);
             await subcommand.execute(user,message,args);
         }else {
-            await  message.channel.send({content:language_manager.getTranslate("Command.error.subcommand",[CommandFactory.getPrefix(),this.getName()], "faites &1&2 `help`|`aide`")})
+            await  message.channel.send({content:language_manager.getTranslate(message.guildId, "Command.error.subcommand",[CommandFactory.getPrefix(),this.getName()], "faites &1&2 `help`|`aide`")})
         }
     }
 }

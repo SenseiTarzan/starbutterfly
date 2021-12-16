@@ -18,7 +18,7 @@
     "node-fetch": "^2.6.1",
     "tweetnacl": "^1.0.3",
     "yamljs": "^0.3.0",
-    "ytdl-core": "^4.9.1"
+    "ytdl-core": "^4.9.2"
   },
   "devDependencies": {
     "@discordjs/voice": "^0.7.5",
