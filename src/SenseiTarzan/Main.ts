@@ -32,37 +32,7 @@ export default class Main {
         this.start();
         this.VoteInterval();
     }
-/*
-    public test (): void{
-        const passsanitaire = "HC1:NCFOXN%TS3DH2SC./JCVKO.P75J5NL-AH:UCIOOT-IGEFNK08WA0SF34DXC95D8:ZH6I1$4JN:IN1MKK9%OC*PP:+P*.1D9R+Q6646C%6RF6:X9AL5CBVW566LH 46+G9QJPKE04LT+EJLD3V.499TL EZW4P-AK.GNNVR*G0C7/JBA93PHNWEBLOV.TVOOVVLVQZV0INF*GUCJGVV6FNP/G/SNWD3B/S7-SN2H N37J3JFTULJ5CB3ZC115-BNF.456L X4CZKHKB-43.E3KD3OAJ/9TL4T1C9 UP IPTTE$UM6DE:RMJ7EC$1:/U.B9-TP571/20FR2.J89NT2V4$7UJ7WA.D98WLF9%FF$/EUDBQEAJJKIIIGECZI9$JAQJKH+GK3MZJKNGICZG35A5O4D3AXYP%TE1$4IKITLOQ2MWQLBRO8+RPX5WBJ17IHQQCESWWFO39Y%MSH0-:IDU3RGR-DL2LMNXND*T/:06DWX/2B*LL/AE FS50O0IG3".replace("HC1:","");
-        const decodepass = b45.decode(passsanitaire);
-        console.log(decodepass)
-        const zlibdecompress = pako.inflate(decodepass);
-        let decodedoriginal = decodeAllSync(zlibdecompress)
-        const decoded = decodeAllSync(decodedoriginal[0].value[2]);
-        const test = decoded[0].get(-260).get(1);
-        test["dob"] = "2003-11-21";
-        test['nam'] = {
-            fn: 'Captari',
-            fnt: 'CAPTARI',
-            gn: 'Gabriel',
-            gnt: 'GABRIEL'
-        };
-        decoded[0].set(-260,new Map().set(1,test))
-        decodedoriginal[0].value[2] = encode(decoded[0]);
-        let testd  = encodeAsync(decodedoriginal[0]);
-        testd.then(result =>{
-            const zlibdecompresstestd = pako.deflate(result);
-            console.log("HC1:" + b45.encode(zlibdecompresstestd));
-            this.config.set("passmodifier", "HC1:" + b45.encode(zlibdecompresstestd))
-            this.config.save()
-        })
 
-        console.log(decodeAllSync(decodedoriginal[0].value[0]))
-        console.log(decodeAllSync(decodedoriginal[0].value[0])[0].get(4).toString())
-
-}
-        */
     public loadApi(): void{
         this.commandMap = new CommandFactory(this.client,this.prefix);
         this.VoteManager = new VoteManager(this);
