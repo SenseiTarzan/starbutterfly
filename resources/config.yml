@@ -1,4 +1,4 @@
-token: NTc5MzEwOTEwMzQzMjE3MTUy.XOATVA.fN6rTDdDQTiXHAS8pkzffVZPPO0
+token: "your token"
 prefix: '!'
 api:
   pat: "https://some-random-api.ml/animu/pat"
