@@ -51,7 +51,6 @@ export default class Main {
         commandsMap.registerCommands(new LanguageCommands());
         commandsMap.registerCommands(new MusicCommands());
         commandsMap.registerCommands(new PatCommand());
-        commandsMap.registerCommands(new VoteCommand());
     }
 
     public start(): void{
