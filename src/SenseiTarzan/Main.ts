@@ -3,7 +3,6 @@ import Config from "./Utils/Config";
 import CommandFactory from "./Utils/CommandFactory";
 import {VoteManager} from "./Api/VoteManager";
 import LanguageManager from "./Api/language/LanguageManager";
-import VoteCommand from "./Commands/hevolia/VoteCommand";
 import fetch from "node-fetch";
 import RadioManager from "./Api/Radio/RadioManager";
 import QueueMusicManager from "./Utils/QueueMusicManager";
